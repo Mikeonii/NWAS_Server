@@ -40,7 +40,7 @@ class UnitController extends Controller
         $unit->unit_type = $request->input('unit_type');
         $unit->unit_brand = $request->input('unit_brand') ? strtoupper($request->input('unit_brand')) : "";
         $unit->unit_model = $request->input('unit_model') ? strtoupper($request->input('unit_model')) :"";
-        $unit->serial_no = $request->input('serial_no') ?strtoupper($request->input('serial_no')) :"";
+        $unit->serial_no = $request->input('serial_no') ? strtoupper($request->input('serial_no')) :"";
         $unit->date_received = $request->input('date_received');
         $unit->picked_up_by = $request->input('picked_up_by');
         $unit->picked_up_date = $request->input('picked_up_date');

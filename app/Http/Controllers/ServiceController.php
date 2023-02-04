@@ -26,9 +26,10 @@ class ServiceController extends Controller
         }
     }
 
+    
+
     public function add_service_payment(Request $request){
 
-        
         $customer_id = $request->input('customer_id');
         $service_id = $request->input('service_id');
         $payment_method = $request->input('payment_method');

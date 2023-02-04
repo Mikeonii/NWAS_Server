@@ -10,6 +10,7 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\InvoiceController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -20,7 +21,6 @@ use App\Http\Controllers\ItemController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -32,7 +32,6 @@ Route::group(['middleware'=>['auth:sanctum']],function(){
         Route::put('/customer',[CustomerController::class,'store']);
         Route::get('/customers',[CustomerController::class,'index']);
       
-
         Route::get('/units/{customer_id}',[UnitController::class,'show']);
         Route::post('/unit',[UnitController::class,'store']);
         Route::put('/unit',[UnitController::class,'store']);
@@ -49,10 +48,13 @@ Route::group(['middleware'=>['auth:sanctum']],function(){
         Route::post('/supplier',[SupplierController::class,'store']);
         
         Route::get('/payments/{customer_id}',[PaymentController::class,'show']);
+        Route::post('/payment',[PaymentController::class,'store']);
 
         Route::get('/items',[ItemController::class,'index']);
 
-     
+        Route::get('/invoices/{customer_id}',[InvoiceController::class,'show']);
+        Route::post('/invoice',[InvoiceController::class,'store']);
+
 });
 // AUTHENTICATION
 Route::post('/auth/signin',[AuthController::class,'signin']);
