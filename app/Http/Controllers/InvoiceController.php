@@ -6,9 +6,24 @@ use Illuminate\Http\Request;
 use App\Models\Invoice;
 use App\Models\Service;
 use App\Models\Item;
+use Carbon\Carbon;
 class InvoiceController extends Controller
 {
+    public function print($type,$invoice_id){
     
+        if($type =='invoice'){
+            $invoice = Invoice::where('id',$invoice_id)->with('payables.payable')->with('customer')->first();
+            $due_date = new Carbon($invoice->invoice_date);
+            $due_date->addDays(15)->format('Y-m-d');
+            $invoice->due_date = $due_date;
+            return view('print_invoice')->with('invoice',$invoice);
+        }
+        elseif($type =='quote'){
+            $invoice = Invoice::where('id',$invoice_id)->with('quoteables.quoteable')->with('customer')->first();
+            return view('print_quote')->with('invoice',$invoice);
+        }
+        return "print";
+    }
     public function show($customer_id){
         return Invoice::where('customer_id',$customer_id)->with('payables.payable.warranty')->get();
     }
@@ -22,7 +37,8 @@ class InvoiceController extends Controller
         $new->invoice_code = $this->generate_invoice_code($request->input('invoice_date'));
         $new->invoice_status = "Waiting for Payment";
         $new->is_quote = $request->input('is_quote');
-        $new->purpose = $request->input('purpose');
+        $purpose = $request->input('is_quote') == 1 ? strtoupper($request->input('purpose')) : "N/a";
+        $new->purpose = $purpose;
 
         try{
             $new->save();

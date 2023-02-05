@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\InvoiceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,6 +13,9 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+
+Route::get('/print/{type}/{invoice_id}',[InvoiceController::class,'print']);
 
 Route::get('/', function () {
     return view('welcome');

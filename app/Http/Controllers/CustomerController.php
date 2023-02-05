@@ -16,7 +16,8 @@ class CustomerController extends Controller
         $data = $request->only(['customer_name', 'customer_contact_no',
          'other_contact_platform', 'customer_municipality', 
          'customer_barangay', 'customer_purok', 'where_did_you_find_us']);
-
+         
+         $data['customer_name'] = strtoupper($data['customer_name']);
         if ($request->isMethod('post')) {
             $customer = new Customer($data);
         } else {

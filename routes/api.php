@@ -55,6 +55,8 @@ Route::group(['middleware'=>['auth:sanctum']],function(){
         Route::get('/invoices/{customer_id}',[InvoiceController::class,'show']);
         Route::post('/invoice',[InvoiceController::class,'store']);
 
+
+
 });
 // AUTHENTICATION
 Route::post('/auth/signin',[AuthController::class,'signin']);

@@ -15,6 +15,9 @@ class Invoice extends Model
     public function payables(){
         return $this->hasMany(Payable::class);
     }
+    public function quoteables(){
+        return $this->hasMany(Quoteable::class);
+    }
     public function customer(){
         return $this->belongsTo(Customer::class);
     }
