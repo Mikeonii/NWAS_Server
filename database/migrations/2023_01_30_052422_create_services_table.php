@@ -18,6 +18,8 @@ class CreateServicesTable extends Migration
             $table->string('service_name');
             $table->integer('service_amount');
             $table->integer('supplier_id');
+            $table->integer('supplier_service_amount');
+            $table->integer('profitable_margin');
             $table->timestamps();
         });
     }

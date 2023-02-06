@@ -18,5 +18,8 @@ class Service extends Model
     public function quoteable(){
         return $this->morphMany(Quoteable::class,'quoteable');
     }
+    public function supplier(){
+        return $this->belongsTo(Supplier::class);
+    }
 
 }

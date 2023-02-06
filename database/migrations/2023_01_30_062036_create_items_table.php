@@ -21,6 +21,7 @@ class CreateItemsTable extends Migration
             $table->string('unit_price');
             $table->integer('selling_price');
             $table->date('date_received');
+            $table->integer('profitable_margin');
             $table->timestamps();
         });
     }

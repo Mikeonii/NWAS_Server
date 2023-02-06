@@ -12,6 +12,14 @@ class UnitController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+     public function print_job_order_slip($data,$unit_id){
+        $data = json_decode($data);
+        $unit = Unit::where('id',$unit_id)->with('customer')->first();
+        
+        return view('print_job_order_slip')->with('data',$data)->with('unit',$unit);
+     }
+    
     public function index()
     {
         //

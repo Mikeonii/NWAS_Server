@@ -35,6 +35,7 @@ Route::group(['middleware'=>['auth:sanctum']],function(){
         Route::get('/units/{customer_id}',[UnitController::class,'show']);
         Route::post('/unit',[UnitController::class,'store']);
         Route::put('/unit',[UnitController::class,'store']);
+ 
 
         Route::get('/problems/{unit_id}',[ProblemController::class,'show']);
         Route::post('/problem',[ProblemController::class,'store']);
@@ -46,11 +47,13 @@ Route::group(['middleware'=>['auth:sanctum']],function(){
         Route::post('/add_service_payment',[ServiceController::class,'add_service_payment']);
 
         Route::post('/supplier',[SupplierController::class,'store']);
+        Route::get('/suppliers',[SupplierController::class,'index']);
         
         Route::get('/payments/{customer_id}',[PaymentController::class,'show']);
         Route::post('/payment',[PaymentController::class,'store']);
 
         Route::get('/items',[ItemController::class,'index']);
+        Route::post('/item',[ItemController::class,'store']);
 
         Route::get('/invoices/{customer_id}',[InvoiceController::class,'show']);
         Route::post('/invoice',[InvoiceController::class,'store']);

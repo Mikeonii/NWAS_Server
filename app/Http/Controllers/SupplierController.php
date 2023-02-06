@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Exception;
+use App\Models\Supplier;
 class SupplierController extends Controller
 {
+    public function index(){
+        return Supplier::all();
+    }
     public function store(Request $request){
         $new = $request->isMethod('put') ? Supplier::findOrFail($request->id) : new Supplier;
         $new->supplier_name = $request->input('supplier_name');

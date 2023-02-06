@@ -12,4 +12,7 @@ class Unit extends Model
         'customer_id','unit_type','unit_brand',
         'unit_model','serial_no','date_received'
     ];
+    public function customer(){
+        return $this->belongsTo(customer::class);
+    }
 }
