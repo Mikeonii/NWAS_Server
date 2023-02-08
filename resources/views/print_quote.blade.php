@@ -50,7 +50,7 @@
                 <th>Description</th>
                 <th>Price</th>
                 <th>Quantity</th>
-                <th style="color:red">Total</th>
+                <th style="color:">Total</th>
             </tr>
         </thead>
         <tbody>
@@ -63,13 +63,13 @@
                         <td>{{$payable->payable->service_name}}</td>
                         <td>{{$payable->payable->service_amount}}</td>
                         <td>{{$payable->quantity}}</td>
-                        <td style="color:red">{{$payable->amount}}</td>
+                        <td style="color:">{{$payable->amount}}</td>
                         @else 
                         {{-- for item --}}
                         <td>{{$payable->payable->item_name}}</td>
                         <td>{{$payable->payable->selling_price}}</td>
                         <td>{{$payable->quantity}}</td>
-                        <td style="color:red">{{$payable->amount}}</td>
+                        <td style="color:">{{$payable->amount}}</td>
                         @endif
                     </tr>
                 @endforeach
@@ -82,13 +82,13 @@
                         <td>{{$quoteable->quoteable->service_name}}</td>
                         <td>{{$quoteable->quoteable->service_amount}}</td>
                         <td>{{$quoteable->quantity}}</td>
-                        <td style="color:red">{{$quoteable->amount}}</td>
+                        <td style="color:">{{$quoteable->amount}}</td>
                         @else 
                         {{-- for item --}}
                         <td>{{$quoteable->quoteable->item_name}}</td>
                         <td>{{$quoteable->quoteable->selling_price}}</td>
                         <td>{{$quoteable->quantity}}</td>
-                        <td style="color:red">{{$quoteable->amount}}</td>
+                        <td style="color:">{{$quoteable->amount}}</td>
                         @endif
                     </tr>
                 @endforeach
@@ -97,7 +97,11 @@
     </table>
    
     <h6 style="color:black;text-align:right; margin-top:-10px;">Subtotal: {{$invoice->amount}}</h6>
-    <h5 style="color:red; text-align:right;font-weight:bold">Total {{$invoice->total_amount}}</h5>
+    @if($invoice->discount >0)
+    <p style="color:green;text-align:right; margin-top:-10px;">Discount: {{$invoice->discount}}</p>
+    @endif
+    <h5 style="color:DarkCyan; text-align:right;font-weight:bold">Total {{$invoice->total_amount}}</h5>
+   
     @if($invoice->discount >0)
     <p style="font-size:14px; color:grey; text-align:right; margin-top:-10px;">Discount Applied</p>
     @endif
