@@ -76,7 +76,7 @@ style="
   height: 10%;
   width: 100%;
   background-image: linear-gradient(to right, red, blue);
-  margin-top:50px;
+  margin-top:30px;
 "
 >
 
