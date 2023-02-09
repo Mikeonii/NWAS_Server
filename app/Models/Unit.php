@@ -13,6 +13,6 @@ class Unit extends Model
         'unit_model','serial_no','date_received'
     ];
     public function customer(){
-        return $this->belongsTo(customer::class);
+        return $this->belongsTo(Customer::class);
     }
 }
