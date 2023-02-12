@@ -44,7 +44,7 @@
                   > </div>
                     <p style="margin-top;">Type: {{$unit->unit_type}}</p>
                     <p style="margin-top:-20px;">Brand: {{$unit->unit_brand}}</p>
-                    <p style="margin-top:-20px;">Model: {{$unit->model}}</p>
+                    <p style="margin-top:-20px;">Model: {{$unit->unit_model}}</p>
                     <p style="margin-top:-20px;">S/N: {{$unit->serial_no}}</p>
                 </div>
             
