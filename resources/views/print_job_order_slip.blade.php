@@ -52,7 +52,7 @@
             <div>
                 <h6 style="font-weight:bold">INITIAL PROBLEM/S: @foreach($data as $d)<span>{{$d}}, </span>@endforeach </h6>
                 <p>Terms and Conditions</p>
-                <ol style="color:grey; font-size:12px">
+                <ol style="color:black; font-size:12px">
                     <li>Liability: Our business is not liable for any damages, external or internal, that may occur to your device after it has been removed from our shop, especially if the damage is not related to the service we rendered.</li>
                     <li>Warranty: After the warranty period has expired, we are not obliged to repair or replace items for free. Additional charges may apply.</li> 
                     <li>Device Pick-up & Storage: You'll be notified of pick-up via text, email or chat after repair. If not picked up within 15 days, daily storage fee of 15 pesos applies. After 3 months, device becomes our property.</li>
