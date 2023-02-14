@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Unit;
 use Illuminate\Http\Request;
-
+use Exception;
 class UnitController extends Controller
 {
     /**
@@ -24,7 +24,6 @@ class UnitController extends Controller
     {
         //
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -102,8 +101,14 @@ class UnitController extends Controller
      * @param  \App\Models\Unit  $unit
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Unit $unit)
+    public function destroy($id)
     {
-        //
+       
+        try{
+            Unit::destroy($id);
+        }
+        catch(Exception $e){
+            return $e->getMessage();
+        }
     }
 }

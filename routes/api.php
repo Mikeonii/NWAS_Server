@@ -35,8 +35,8 @@ Route::group(['middleware'=>['auth:sanctum']],function(){
         Route::get('/units/{customer_id}',[UnitController::class,'show']);
         Route::post('/unit',[UnitController::class,'store']);
         Route::put('/unit',[UnitController::class,'store']);
+        Route::delete('/unit/{id}',[UnitController::class,'destroy']);
  
-
         Route::get('/problems/{unit_id}',[ProblemController::class,'show']);
         Route::post('/problem',[ProblemController::class,'store']);
         Route::put('/problem',[ProblemController::class,'store']);
@@ -57,6 +57,7 @@ Route::group(['middleware'=>['auth:sanctum']],function(){
 
         Route::get('/invoices/{customer_id}',[InvoiceController::class,'show']);
         Route::post('/invoice',[InvoiceController::class,'store']);
+        Route::delete('/invoice/{invoice_id}',[InvoiceController::class,'delete_invoice']);
 
 
 

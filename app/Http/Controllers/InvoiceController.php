@@ -143,4 +143,18 @@ class InvoiceController extends Controller
         $x = "JMBC".$invoice_date.rand(10,100);
         return $x;
     }
+    public function delete_invoice($invoice_id){
+        // check if invoice or quote
+        $inv = Invoice::findOrFail($invoice_id);
+        if($inv->is_quote){
+            // delete quotables
+            $inv->quoteables()->delete();
+        }
+        else{
+            // delete payables
+            $inv->payables()->delete();
+        }
+        return $inv->delete();
+     
+    }
 }
