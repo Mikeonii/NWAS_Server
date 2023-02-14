@@ -15,4 +15,7 @@ class Unit extends Model
     public function customer(){
         return $this->belongsTo(Customer::class);
     }
+    public function problems(){
+        return $this->hasMany(Problem::class);
+    }
 }

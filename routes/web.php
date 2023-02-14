@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\UnitController;
+use App\Http\Controllers\ProblemController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +19,7 @@ use App\Http\Controllers\UnitController;
 
 Route::get('/print/{type}/{invoice_id}',[InvoiceController::class,'print']);
 Route::get('/print_job_order_slip/{data}/{unit_id}',[UnitController::class,'print_job_order_slip']);
+Route::get('/work_history/{problem_id}/{invoice_id}',[ProblemController::class,'print']);
 Route::get('/', function () {
     return view('welcome');
 });
