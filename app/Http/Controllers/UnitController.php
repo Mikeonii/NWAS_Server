@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Unit;
+use App\Models\Problem;
 use Illuminate\Http\Request;
 use Exception;
 class UnitController extends Controller
@@ -12,7 +13,22 @@ class UnitController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-
+    public function print_work_history_slip($data,$unit_id){
+        // check if data length is 2 or more.
+        $data = json_decode($data);
+        $is_two = null;
+        if(sizeof($data) >=2 ){
+            // two work history slip should be printed
+            $is_two = true;
+            return $is_two;
+        }
+        else{
+            $problem = Problem::where('problem_description',$data[0])
+            ->where('unit_id',$unit_id)->with('customer')->with('unit')->first();
+            return view('print_work_history')->with('problem',$problem);
+        }
+    
+    }
      public function print_job_order_slip($data,$unit_id){
         $data = json_decode($data);
         $unit = Unit::where('id',$unit_id)->with('customer')->first();
@@ -103,7 +119,6 @@ class UnitController extends Controller
      */
     public function destroy($id)
     {
-       
         try{
             Unit::destroy($id);
         }

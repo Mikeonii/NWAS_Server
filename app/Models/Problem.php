@@ -12,4 +12,7 @@ class Problem extends Model
     public function unit(){
         return $this->belongsTo(Unit::class);
     }
+    public function customer(){
+        return $this->belongsTo(Customer::class);
+    }
 }

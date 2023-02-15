@@ -15,6 +15,9 @@ class Customer extends Model
     public function units(){
         return $this->hasMany(Unit::class);
     }
+    public function problems(){
+        return $this->hasMany(Problem::class);
+    }
 
     public function payments(){
         return $this->hasMany(Payment::class);

@@ -101,12 +101,16 @@ class ProblemController extends Controller
     {
         return Problem::where('id',$problem)->destroy;
     }
+    public function print2($problem_id){
+        $problem = Problem::where('id',$problem_id)->with('customer')->first();
+        return $problem;
+    }
     public function print($problem_id,$invoice_id){
 
         $invoice = Invoice::where('id',$invoice_id)
         ->with('payables.payable.warranty')
         ->first();
-        // return $invoice;
+    
         $prob = Problem::where('id',$problem_id)->with('unit')->first();
         $actions = json_decode($prob->actions_performed);
         $results = json_decode($prob->recommendations);
