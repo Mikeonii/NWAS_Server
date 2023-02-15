@@ -56,7 +56,7 @@
                     <li>Liability: Our business is not liable for any damages, external or internal, that may occur to your device after it has been removed from our shop, especially if the damage is not related to the service we rendered.</li>
                     <li>Warranty: After the warranty period has expired, we are not obliged to repair or replace items for free. Additional charges may apply.</li> 
                     <li>Device Pick-up & Storage: You'll be notified of pick-up via text, email or chat after repair. If not picked up within 15 days, daily storage fee of 15 pesos applies. After 3 months, device becomes our property.</li>
-                    <li>Payment: Diagnostic fee of 180 pesos for Laptop External, 250 Internal, Board diagnosis fee of 380 pesos, Printer diagnosis 300 pesos, and other charges are due upon pick-up. We accept cash and online payments. Downpayments, if required, must be paid before the order is processed.</li>
+                    <li>Payment: Diagnostic fee of 180 pesos for Laptop/Desktop External, 250 Internal, Printer diagnosis 300 pesos, Board diagnosis fee of 380 pesos, and other charges are due upon pick-up. We accept cash and online payments. Downpayments, if required, must be paid before the order is processed.</li>
                     <li>Data Backup: Backup all important data before repair. We are not responsible for data loss.</li>
                     <li>Changes: These terms and conditions are subject to change at any time without notice.</li>
                     <li>Acceptance: By leaving your device for repair, you are accepting these terms and conditions.</li>
@@ -69,30 +69,6 @@
         </div>
     </div>
 
-</div>
-<div
-class="container"
-style="
-  height: 10%;
-  width: 100%;
-  background-image: linear-gradient(to right, red, blue);
-  margin-top:30px;
-"
->
-
-<div class="row" style="padding-right:60px; padding-left:60px; padding-top:20px; padding-bottom:10px;">
-    
-    <div class="col"><img src="{{ asset('jmb_computers_white.png') }}" 
-        width="100%" style="margin-top:5px;">
- 
-    </div>
-    <div class="col" style="color:white;width:700px;">
-    
-        <ul style="font-size:12px;">
-            <li>www.jmbcomputers.com</li>
-            <li>www.facebook.com/JMBComputersN</li>
-        </ul>
-    </div>
 </div>
 
 </div>
