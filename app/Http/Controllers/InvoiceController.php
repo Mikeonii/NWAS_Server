@@ -25,7 +25,7 @@ class InvoiceController extends Controller
         return "print";
     }
     public function show($customer_id){
-        return Invoice::where('customer_id',$customer_id)->with('payables.payable.warranty')->get();
+        return Invoice::where('customer_id',$customer_id)->with('payables.payable.warranty')->with('quoteables.quoteable.warranty')->get();
     }
     public function store(Request $request){
         $new = $request->isMethod('put') ? Invoice::findOrFail($request->id) : new Invoice;
@@ -44,7 +44,7 @@ class InvoiceController extends Controller
             $new->save();
             // get service payables
             $this->get_payables($request->input('payables'),$new->id,$request->input('is_quote'));
-            $new = Invoice::where('id',$new->id)->with('payables.payable.warranty')->first();
+            $new = Invoice::where('id',$new->id)->with('payables.payable.warranty')->with('quoteables.quoteable.warranty')->first();
             return $new;
         }
         catch(Exception $e){
