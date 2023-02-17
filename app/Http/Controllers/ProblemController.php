@@ -117,10 +117,17 @@ class ProblemController extends Controller
         $remarks = json_decode($prob->other_remarks);
 
         $history = collect([]);
-        for($x=0;$x<=sizeof($remarks)-1; $x++){
-            $i = collect(['action'=>$actions[$x],'results'=>$results[$x],'remarks'=>$remarks[$x]]);
+        
+        for($x=0; $x < count($actions); $x++){
+            $current_action = isset($actions[$x]) ? $actions[$x] : "";
+            $current_result = isset($results[$x]) ? $results[$x] : "";
+            $current_remark = isset($remarks[$x]) ? $remarks[$x] : "";
+                    
+            $i = collect(['action' => $current_action, 'results' => $current_result, 'remarks' => $current_remark]);
             $history->push($i);
         }
+        
+        
         $date_inserted = new Carbon($prob->date_created);
         $date_inserted = $date_inserted->format("Y-m-d H:i");
         $customer = Customer::findOrFail($prob->customer_id);
