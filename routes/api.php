@@ -58,6 +58,7 @@ Route::group(['middleware'=>['auth:sanctum']],function(){
         Route::get('/invoices/{customer_id}',[InvoiceController::class,'show']);
         Route::post('/invoice',[InvoiceController::class,'store']);
         Route::delete('/invoice/{invoice_id}',[InvoiceController::class,'delete_invoice']);
+        Route::get('/unpaid_invoices',[InvoiceController::class,'get_unpaid_invoices']);
 
 
 

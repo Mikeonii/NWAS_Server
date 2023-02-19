@@ -9,7 +9,7 @@ class Invoice extends Model
 {
     use HasFactory;
     
-    public function payment(){
+    public function payments(){
         return $this->hasMany(Payment::class);
     }
     public function payables(){

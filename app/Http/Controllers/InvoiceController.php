@@ -9,23 +9,33 @@ use App\Models\Item;
 use Carbon\Carbon;
 class InvoiceController extends Controller
 {
+    public function get_unpaid_invoices(){
+        $unpaid = Invoice::where('invoice_status','!=','Paid')
+        ->with('customer:id,customer_name')
+        ->with('payables.payable.warranty')
+        ->with('payments')
+        ->with('quoteables.quoteable.warranty')
+        ->get();
+
+        return $unpaid;
+    }
     public function print($type,$invoice_id){
     
         if($type =='invoice'){
-            $invoice = Invoice::where('id',$invoice_id)->with('payables.payable')->with('customer')->first();
+            $invoice = Invoice::where('id',$invoice_id)->with('payables.payable')->with('payments')->with('customer')->first();
             $due_date = new Carbon($invoice->invoice_date);
             $due_date->addDays(15)->format('Y-m-d');
             $invoice->due_date = $due_date;
             return view('print_invoice')->with('invoice',$invoice);
         }
         elseif($type =='quote'){
-            $invoice = Invoice::where('id',$invoice_id)->with('quoteables.quoteable')->with('customer')->first();
+            $invoice = Invoice::where('id',$invoice_id)->with('quoteables.quoteable')->with('payments')->with('customer')->first();
             return view('print_quote')->with('invoice',$invoice);
         }
         return "print";
     }
     public function show($customer_id){
-        return Invoice::where('customer_id',$customer_id)->with('payables.payable.warranty')->with('quoteables.quoteable.warranty')->get();
+        return Invoice::where('customer_id',$customer_id)->with('payables.payable.warranty')->with('payments')->with('quoteables.quoteable.warranty')->get();
     }
     public function store(Request $request){
         $new = $request->isMethod('put') ? Invoice::findOrFail($request->id) : new Invoice;
