@@ -7,7 +7,11 @@ use Exception;
 use App\Models\Payment;
 use App\Models\Invoice;
 class PaymentController extends Controller
-{
+{   
+    public function destroy($payment_id){
+       return Payment::where('id', $payment_id)->delete();
+    }
+
     public function update(Request $request){
         $new = Payment::findOrFail($request->id);
         $new->customer_id = $request->input('customer_id');
@@ -35,12 +39,16 @@ class PaymentController extends Controller
         $new->payment_date = $request->input('payment_date');
         try{
             $new->save();
-            $new = Invoice::findOrFail($request->input('invoice_id'));
-            $new->invoice_status = $request->input('invoice_status');
-            $new->save();
+            if($request->isMethod('post')){
+                $new = Invoice::findOrFail($request->input('invoice_id'));
+                $new->invoice_status = $request->input('invoice_status');
+                $new->save();
 
-            $new = Invoice::where('id',$new->id)->with('payables.payable.warranty')->first();
-            return $new;
+                $new = Invoice::where('id',$new->id)->with('payables.payable.warranty')->first();
+                return $new;
+            }else{
+                return $new;
+            }
         }
         catch(Exception $e){
             return $e->getMessage();

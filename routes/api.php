@@ -51,6 +51,8 @@ Route::group(['middleware'=>['auth:sanctum']],function(){
         
         Route::get('/payments/{customer_id}',[PaymentController::class,'show']);
         Route::post('/payment',[PaymentController::class,'store']);
+        Route::put('/payment',[PaymentController::class,'store']);
+        Route::delete('/payment/{payment_id}',[PaymentController::class,'destroy']);
 
         Route::get('/items',[ItemController::class,'index']);
         Route::post('/item',[ItemController::class,'store']);
