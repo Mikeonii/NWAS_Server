@@ -40,7 +40,12 @@ class PaymentController extends Controller
         try{
             $new->save();
             if($request->isMethod('post')){
+                // check if there is a balance
+                
                 $new = Invoice::findOrFail($request->input('invoice_id'));
+                if($request->input('amount_paid') != $new->total_amount){
+                    $new->balance = $new->total_amount - $request->input('amount_paid');
+                }
                 $new->invoice_status = $request->input('invoice_status');
                 $new->save();
 

@@ -12,6 +12,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\SummaryController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -68,6 +69,9 @@ Route::group(['middleware'=>['auth:sanctum']],function(){
         Route::post('/expense',[ExpenseController::class,'store']);
         Route::put('/expense',[ExpenseController::class,'store']);
         Route::delete('/expense/{expense_id}',[ExpenseController::class,'destroy']);
+
+
+        Route::get('/total_net',[SummaryController::class,'get_total_net']);
 
 });
 // AUTHENTICATION

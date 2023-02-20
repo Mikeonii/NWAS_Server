@@ -7,8 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
-{
-    
+{   
     public function index(){
         return User::all();
     }
