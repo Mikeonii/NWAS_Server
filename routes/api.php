@@ -11,6 +11,7 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\ExpenseController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -63,7 +64,10 @@ Route::group(['middleware'=>['auth:sanctum']],function(){
         Route::delete('/invoice/{invoice_id}',[InvoiceController::class,'delete_invoice']);
         Route::get('/unpaid_invoices',[InvoiceController::class,'get_unpaid_invoices']);
 
-
+        Route::get('/expenses',[ExpenseController::class,'index']);
+        Route::post('/expense',[ExpenseController::class,'store']);
+        Route::put('/expense',[ExpenseController::class,'store']);
+        Route::delete('/expense/{expense_id}',[ExpenseController::class,'destroy']);
 
 });
 // AUTHENTICATION
