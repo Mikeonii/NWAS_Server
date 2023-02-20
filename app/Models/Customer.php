@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Customer extends Model
 {
@@ -11,6 +12,7 @@ class Customer extends Model
     'other_contact_platform', 'customer_municipality', 
     'customer_barangay', 'customer_purok', 'where_did_you_find_us'];
     use HasFactory;
+    use SoftDeletes;
 
     public function units(){
         return $this->hasMany(Unit::class);

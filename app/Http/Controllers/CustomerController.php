@@ -33,4 +33,7 @@ class CustomerController extends Controller
             return $e->getMessage();
         }
     }
+    public function destroy($customer_id){
+        return Customer::where('id',$customer_id)->delete();
+    }
 }

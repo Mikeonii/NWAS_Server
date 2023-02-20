@@ -31,6 +31,7 @@ Route::group(['middleware'=>['auth:sanctum']],function(){
         Route::post('/customer',[CustomerController::class,'store']);
         Route::put('/customer',[CustomerController::class,'store']);
         Route::get('/customers',[CustomerController::class,'index']);
+        Route::delete('/customer/{customer_id}',[CustomerController::class,'destroy']);
       
         Route::get('/units/{customer_id}',[UnitController::class,'show']);
         Route::post('/unit',[UnitController::class,'store']);
