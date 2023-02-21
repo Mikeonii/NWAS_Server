@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Payment;
 use Carbon\Carbon;
 use App\Models\Payable;
+use App\Models\Invoice;
+use App\Models\Service;
 use DB;
 class SummaryController extends Controller
 {
@@ -21,7 +23,7 @@ class SummaryController extends Controller
         $year = $now->year;
         $total_sales_this_month = Payment::whereYear('payment_date', $year)
                                         ->whereMonth('payment_date', $month)
-                                        ->sum('amount');
+                                        ->sum('amount_paid');
         return $total_sales_this_month;
     }
 
@@ -31,38 +33,26 @@ class SummaryController extends Controller
         $year = $now->year;
         $total_expenses_this_month = Expense::whereYear('date_paid', $year)
                                         ->whereMonth('date_paid', $month)
-                                        ->sum('amount');
+                                        ->sum('expense_amount');
         return $total_expenses_this_month;
     }
 
+    public function get_service_sales(){
+        $service_sales = 
+    }
     public function get_total_net(){
         $now = Carbon::now();
         $month = $now->month;
         $year = $now->year;
         
-    // get payables where in invoice's invoice_status == 'Paid'
-    $total_paid_cash = Payable::join('invoices', 'payables.invoice_id', '=', 'invoices.id')
-    ->where('invoices.invoice_status', '=', 'Paid')
-    ->whereMonth('invoices.updated_at',$month)
-    ->whereYear('invoices.updated_at',$year)
-    ->select('payables.*')
-    ->get();   
-    
-    $total_cash = Payment::whereMonth('payment_date',$month)->whereYear('payment_date',$year)->get();
+    $total_cash = Payment::whereMonth('payment_date',$month)->whereYear('payment_date',$year)->sum('amount_paid');
+    $total_receivable_balances = Invoice::whereMonth('invoice_date',$month)->sum('balance');
 
-    $total_cash_receivables = Payable::join('invoices', 'payables.invoice_id', '=', 'invoices.id')
-    ->where('invoices.invoice_status', '=', 'With Balance')
-    ->whereMonth('invoices.updated_at',$month)
-    ->whereYear('invoices.updated_at',$year)
-    ->select('payables.*')
-    ->get(); 
-    
     $col = collect(
         [
-        'total_cash'=>$total_cash->sum('amount_paid'),
-        'total_paid_cash'=>$total_paid_cash->sum('amount'),
-        'total_with_balance_cash'=>$total_cash_receivables->sum('amount'),
-        'total_waiting_for_payment_cash'=> $total_waiting_for_payment_cash->sum('amount')
+        'total_cash_received'=>$total_cash,
+        'total_receivable_balances'=> $total_receivable_balances,
+
         ]);
     return $col;
 

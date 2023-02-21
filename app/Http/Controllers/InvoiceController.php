@@ -47,6 +47,7 @@ class InvoiceController extends Controller
         $new->invoice_code = $this->generate_invoice_code($request->input('invoice_date'));
         $new->invoice_status = "Waiting for Payment";
         $new->is_quote = $request->input('is_quote');
+        $new->balance = 0;
         $purpose = $request->input('is_quote') == 1 ? strtoupper($request->input('purpose')) : "N/a";
         $new->purpose = $purpose;
 
