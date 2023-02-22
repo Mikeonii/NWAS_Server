@@ -16,4 +16,7 @@ class Payable extends Model
     public function payables(){
         return $this->belongsTo(Invoice::class);
     }
+    public function invoice(){
+        return $this->belongsTo(Invoice::class);
+    }
 }

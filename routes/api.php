@@ -71,7 +71,8 @@ Route::group(['middleware'=>['auth:sanctum']],function(){
         Route::delete('/expense/{expense_id}',[ExpenseController::class,'destroy']);
 
 
-        Route::get('/total_net',[SummaryController::class,'get_total_net']);
+        Route::get('/summary',[SummaryController::class,'get_summary']);
+        Route::get('/yearly_summary',[SummaryController::class,'get_yearly_summary']);
 
 });
 // AUTHENTICATION
