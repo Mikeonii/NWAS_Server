@@ -73,7 +73,7 @@ class InvoiceController extends Controller
             }
             // if item
             elseif(array_key_exists("item_name", $payable)){
-                $insert_intp = "Item";
+                $insert_into = "Item";
             }
             $this->insert_item(
                 $payable["id"],
@@ -81,12 +81,45 @@ class InvoiceController extends Controller
                 $insert_into,
                 $is_quote,
                 $quantity,
-                $amount
+                $amount,
+                'create'
             );
         }
     }
-    public function insert_item($id,$invoice_id,$insert_into,$is_quote,$quantity,$amount){
+    // add payables to existing invoice. this function is used in adding an item in payablesModal.vue
+    public function add_payables_to_invoice(Request $request){
+        $insert_into = $request->input('insert_into');
+        $id = $request->input('id');
+        $invoice_id = $request->input('invoice_id');
+        $is_quote = $request->input('is_quote');
+        $quantity = $request->input('quantity');
+        $amount = $request->input('total_amount');
         try{
+            $this->insert_item($id,$invoice_id,$insert_into,$is_quote,$quantity,$amount,'create');
+            $this->update_invoice_payment($invoice_id,$amount);
+            return Invoice::where('id',$invoice_id)->with('payables.payable.warranty')->with('payments')->with('quoteables.quoteable.warranty')->first();
+        }
+        catch(Exception $e){
+            return $e->getMessage();
+        }
+      
+    }
+    public function update_invoice_payment($invoice_id,$total_amount){
+        $invoice = Invoice::findOrFail($invoice_id);
+        $invoice->total_amount += $total_amount;
+        $invoice->amount += $total_amount;
+        // update balance
+        $invoice->balance += $total_amount;
+        try{
+            $invoice->save();
+        }
+        catch(Exception $e){
+            return $e->getMessage();
+        }
+    }
+    public function insert_item($id,$invoice_id,$insert_into,$is_quote,$quantity,$amount,$action){
+        try{
+            
             // checkk insert into
             if($insert_into == 'Service'){
                 $service = Service::findOrFail($id);
@@ -94,7 +127,7 @@ class InvoiceController extends Controller
                 if($is_quote == 1) {
                     $service
                     ->quoteable()
-                    ->create([
+                    ->$action([
                         "invoice_id"=>$invoice_id,
                         "quantity"=>$quantity,
                         "amount"=>$amount
@@ -103,7 +136,7 @@ class InvoiceController extends Controller
                 else {
                     $service
                     ->payable()
-                    ->create([
+                    ->$action([
                         "invoice_id"=>$invoice_id,
                         "quantity"=>$quantity,
                         "amount"=>$amount
@@ -116,7 +149,7 @@ class InvoiceController extends Controller
                  if($is_quote == 1) {
                     $item
                     ->quoteable()
-                    ->create([
+                    ->$action([
                         "invoice_id"=>$invoice_id,
                         "quantity"=>$quantity,
                         "amount"=>$amount
@@ -125,7 +158,7 @@ class InvoiceController extends Controller
                 else {
                     $item
                     ->payable()
-                    ->create([
+                    ->$action([
                         "invoice_id"=>$invoice_id,
                         "quantity"=>$quantity,
                         "amount"=>$amount

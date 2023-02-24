@@ -7,7 +7,7 @@ use App\Models\Item;
 class ItemController extends Controller
 {
     public function index(){
-        return Item::with('warranty')->with('supplier')->get();
+        return Item::with('warranty')->with('supplier')->orderBy('item_name','ASC')->get();
     }
     public function store(Request $request){
         $new = $request->isMethod('put') ? Item::findOrFail($request->id) : new Item;

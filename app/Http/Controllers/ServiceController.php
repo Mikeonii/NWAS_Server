@@ -9,7 +9,7 @@ class ServiceController extends Controller
 {
 
     public function index(){
-        return Service::with('warranty')->with('supplier')->get();
+        return Service::with('warranty')->with('supplier')->orderBy('service_name','ASC')->get();
     }
 
     public function update(Request $request){
