@@ -65,6 +65,7 @@ Route::group(['middleware'=>['auth:sanctum']],function(){
         Route::delete('/invoice/{invoice_id}',[InvoiceController::class,'delete_invoice']);
         Route::get('/unpaid_invoices',[InvoiceController::class,'get_unpaid_invoices']);
         Route::post('/add_payables_to_invoice',[InvoiceController::class,'add_payables_to_invoice']);
+        Route::delete('/delete_payable_from_invoice/{payable_id}/{is_quote}/{invoice_id}',[InvoiceController::class,'delete_payable_from_invoice']);
 
         Route::get('/expenses',[ExpenseController::class,'index']);
         Route::post('/expense',[ExpenseController::class,'store']);

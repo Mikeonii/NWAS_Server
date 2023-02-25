@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Invoice;
 use App\Models\Service;
 use App\Models\Item;
+use App\Models\Payable;
+use App\Models\Quoteable;
 use Carbon\Carbon;
 class InvoiceController extends Controller
 {
@@ -50,6 +52,7 @@ class InvoiceController extends Controller
         $new->balance = 0;
         $purpose = $request->input('is_quote') == 1 ? strtoupper($request->input('purpose')) : "N/a";
         $new->purpose = $purpose;
+        $new->balance = $request->input('total_amount');    
 
         try{
             $new->save();
@@ -96,30 +99,59 @@ class InvoiceController extends Controller
         $amount = $request->input('total_amount');
         try{
             $this->insert_item($id,$invoice_id,$insert_into,$is_quote,$quantity,$amount,'create');
-            $this->update_invoice_payment($invoice_id,$amount);
-            return Invoice::where('id',$invoice_id)->with('payables.payable.warranty')->with('payments')->with('quoteables.quoteable.warranty')->first();
+            $this->update_invoice_payment($invoice_id,$amount,true);
+            return Invoice::where('id',$invoice_id)
+            ->with('payables.payable.warranty')
+            ->with('payments')
+            ->with('quoteables.quoteable.warranty')
+            ->first();
         }
         catch(Exception $e){
             return $e->getMessage();
         }
-      
     }
-    public function update_invoice_payment($invoice_id,$total_amount){
+    public function delete_payable_from_invoice($payable_id, $is_quote, $invoice_id)
+    {
+        $model = $is_quote ? Quoteable::class : Payable::class;
+        try {
+            $payable = $model::findOrFail($payable_id);
+            $amount = $payable->amount;
+            $this->update_invoice_payment($invoice_id, $amount,false);
+            $payable->delete();
+            return Invoice::where('id',$invoice_id)
+            ->with('payables.payable.warranty')
+            ->with('payments')
+            ->with('quoteables.quoteable.warranty')
+            ->first();
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+    
+    public function update_invoice_payment($invoice_id, $total_amount, $is_add)
+    {
         $invoice = Invoice::findOrFail($invoice_id);
-        $invoice->total_amount += $total_amount;
-        $invoice->amount += $total_amount;
-        // update balance
-        $invoice->balance += $total_amount;
-        try{
-            $invoice->save();
+        // check if there is payment or not. The purpose of this use case is, 
+        //if it is a new quotation/invoice and the user forgot to insert the item, the balance will also add which should'nt
+        // the balance will be only updated if a payment is inserted. 
+        if ($is_add) {
+            $invoice->total_amount += $total_amount;
+            $invoice->amount += $total_amount;
+            $invoice->balance += $total_amount;
+        } else {
+            $invoice->total_amount -= $total_amount;
+            $invoice->amount -= $total_amount;
+            $invoice->balance -= $total_amount;
         }
-        catch(Exception $e){
+        try {
+            $invoice->save();
+        } catch (Exception $e) {
             return $e->getMessage();
         }
     }
+    
     public function insert_item($id,$invoice_id,$insert_into,$is_quote,$quantity,$amount,$action){
-        try{
-            
+        try{ 
             // checkk insert into
             if($insert_into == 'Service'){
                 $service = Service::findOrFail($id);
