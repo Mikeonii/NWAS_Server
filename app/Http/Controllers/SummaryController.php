@@ -33,7 +33,7 @@ class SummaryController extends Controller
             'Total Item Net'=>$total_item_net,
             'Total Service Sales'=>$total_service_sales,
             'Total Expense'=>$total_expense,
-            'Total Balance'=>$total_balance
+            'Total Collectibles'=>$total_balance
         ]);
         return $summary;
     }

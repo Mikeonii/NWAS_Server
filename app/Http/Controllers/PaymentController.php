@@ -8,24 +8,20 @@ use App\Models\Payment;
 use App\Models\Invoice;
 class PaymentController extends Controller
 {   
-    public function destroy($payment_id){
-       return Payment::where('id', $payment_id)->delete();
+    public function destroy($payment_id,$invoice_id){
+        $payment = Payment::findOrFail($payment_id);
+        $this->update_balance($invoice_id,$payment->amount_paid,'add');
+        $payment->delete();
+   
     }
-
-    public function update(Request $request){
-        $new = Payment::findOrFail($request->id);
-        $new->customer_id = $request->input('customer_id');
-        $new->amount = $request->input('amount');
-        $new->payment_method = $request->input('payment_method');
-        try{
-            $new->save();
-            return $new;
-        }
-        catch(Exception $e){
-            return $e->getMessage();
-        }
+    public function update_balance($invoice_id, $amount, $operation)
+    {
+        $new = Invoice::findOrFail($invoice_id);
+        $new->balance += ($operation == 'subtract') ? (-$amount) : $amount;
+        $new->invoice_status = ($new->balance == 0) ? 'Paid' : 'With Balance';
+        $new->save();
     }
-
+    
     public function show($customer_id){
         $payments = Payment::where('customer_id',$customer_id)->with('paymentable.warranty')->get();
         return $payments;
@@ -39,21 +35,9 @@ class PaymentController extends Controller
         $new->payment_date = $request->input('payment_date');
         try{
             $new->save();
-            if($request->isMethod('post')){
-                // check if there is a balance
-                
-                $new = Invoice::findOrFail($request->input('invoice_id'));
-                if($request->input('amount_paid') != $new->total_amount){
-                    $new->balance = $new->total_amount - $request->input('amount_paid');
-                }
-                $new->invoice_status = $request->input('invoice_status');
-                $new->save();
-
-                $new = Invoice::where('id',$new->id)->with('payables.payable.warranty')->first();
-                return $new;
-            }else{
-                return $new;
-            }
+            $this->update_balance($request->input('invoice_id'),$new->amount_paid,'subtract');
+            $new = Invoice::where('id',$new->id)->with('payables.payable.warranty')->first();
+            return $new;
         }
         catch(Exception $e){
             return $e->getMessage();

@@ -13,6 +13,7 @@ class InvoiceController extends Controller
 {
     public function get_unpaid_invoices(){
         $unpaid = Invoice::where('invoice_status','!=','Paid')
+        ->where('is_quote',0)
         ->with('customer:id,customer_name')
         ->with('payables.payable.warranty')
         ->with('payments')
@@ -49,7 +50,6 @@ class InvoiceController extends Controller
         $new->invoice_code = $this->generate_invoice_code($request->input('invoice_date'));
         $new->invoice_status = "Waiting for Payment";
         $new->is_quote = $request->input('is_quote');
-        $new->balance = 0;
         $purpose = $request->input('is_quote') == 1 ? strtoupper($request->input('purpose')) : "N/a";
         $new->purpose = $purpose;
         $new->balance = $request->input('total_amount');    
