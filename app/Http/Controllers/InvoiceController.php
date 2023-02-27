@@ -8,9 +8,38 @@ use App\Models\Service;
 use App\Models\Item;
 use App\Models\Payable;
 use App\Models\Quoteable;
+use App\Models\Payment;
 use Carbon\Carbon;
+use DB;
 class InvoiceController extends Controller
 {
+
+    public function update_invoice_balance()
+    {
+        // get all invoices
+        $invoices = Invoice::all();
+        // loop through each invoice
+        foreach ($invoices as $invoice) {
+            // get the sum of payments for the current invoice
+            $payments_sum = Payment::where('invoice_id', $invoice->id)->sum('amount_paid');
+            try{
+                if($payments_sum == 0){
+                    $invoice->balance = $invoice->total_amount;
+                }
+                else{
+                    // calculate the new balance
+                    $new_balance = $invoice->total_amount - $payments_sum;
+                    // set the new balance for the invoice
+                    $invoice->balance = $new_balance;
+                }
+                // save the invoice
+                $invoice->save();
+            }
+            catch(Exception $e){
+                return $e->getMessage();
+            }
+        }
+    }
     public function get_unpaid_invoices(){
         $unpaid = Invoice::where('invoice_status','!=','Paid')
         ->where('is_quote',0)

@@ -111,6 +111,7 @@ class SummaryController extends Controller
     public function total_balance($month,$year){
         $total_balance = Invoice::whereMonth('updated_at',$month)
                                   ->whereYear('updated_at',$year)
+                                  ->where('is_quote',0)
                                   ->sum('balance');
         return $total_balance;
     }

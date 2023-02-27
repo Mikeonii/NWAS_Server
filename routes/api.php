@@ -70,7 +70,7 @@ Route::group(['middleware'=>['auth:sanctum']],function(){
         Route::post('/expense',[ExpenseController::class,'store']);
         Route::put('/expense',[ExpenseController::class,'store']);
         Route::delete('/expense/{expense_id}',[ExpenseController::class,'destroy']);
-
+        Route::get('/update_invoice_balance',[InvoiceController::class,'update_invoice_balance']);
 
         Route::get('/summary',[SummaryController::class,'get_summary']);
         Route::get('/yearly_summary',[SummaryController::class,'get_yearly_summary']);
