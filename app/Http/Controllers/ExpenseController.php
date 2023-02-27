@@ -11,7 +11,7 @@ class ExpenseController extends Controller
         return Expense::all();
     }
     public function destroy($expense_id){
-        return;
+        return Expense::where('id',$expense_id)->delete();
     }
     public function store(Request $request){
         $new = $request->isMethod('put') ? Expense::findOrFail($request->id) : new Expense;
