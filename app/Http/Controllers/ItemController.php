@@ -20,10 +20,19 @@ class ItemController extends Controller
         $new->date_received = $request->input('date_received');
         try{
             $new->save();
-            $new->warranty()->create([
-                "warranty_count"=>$request->input('warranty_count'),
-                "warranty_duration"=>$request->input('warranty_duration')
-            ]);
+            if($request->isMethod('put')){
+                $new->warranty()->update([
+                    "warranty_count"=>$request->input('warranty.warranty_count'),
+                    "warranty_duration"=>$request->input('warranty.warranty_duration')
+                ]);
+            }
+            else{
+                $new->warranty()->create([
+                    "warranty_count"=>$request->input('warranty_count'),
+                    "warranty_duration"=>$request->input('warranty_duration')
+                ]);
+            }
+          
             $new = Item::where('id',$new->id)->with('warranty')->with('supplier')->first();
             return $new;
         }

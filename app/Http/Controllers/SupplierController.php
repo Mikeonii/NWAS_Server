@@ -8,7 +8,7 @@ use App\Models\Supplier;
 class SupplierController extends Controller
 {
     public function index(){
-        return Supplier::all();
+        return Supplier::orderBy('supplier_name','ASC')->get();
     }
     public function store(Request $request){
         $new = $request->isMethod('put') ? Supplier::findOrFail($request->id) : new Supplier;
