@@ -7,6 +7,7 @@ use App\Models\Payable;
 use App\Models\Invoice;
 use App\Models\Service;
 use App\Models\Expense;
+use App\Models\Unit;
 use DB;
 class SummaryController extends Controller
 {
@@ -114,5 +115,9 @@ class SummaryController extends Controller
                                   ->where('is_quote',0)
                                   ->sum('balance');
         return $total_balance;
+    }
+    // get all units that has been picked up
+    public function get_picked_up_units(){
+        return Unit::where('picked_up_date','!=',NULL)->with('customer')->with('problems')->get();
     }
 }

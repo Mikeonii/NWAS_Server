@@ -75,6 +75,7 @@ Route::group(['middleware'=>['auth:sanctum']],function(){
 
         Route::get('/summary',[SummaryController::class,'get_summary']);
         Route::get('/yearly_summary',[SummaryController::class,'get_yearly_summary']);
+        Route::get('/get_picked_up_units',[SummaryController::class,'get_picked_up_units']);
 
 });
 // AUTHENTICATION
