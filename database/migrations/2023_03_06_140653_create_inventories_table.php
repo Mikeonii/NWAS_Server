@@ -19,6 +19,7 @@ class CreateInventoriesTable extends Migration
             $table->integer('supplier_id');
             $table->integer('quantity');
             $table->string('unit')->default('PCS');
+            $table->date('date_arrived');
             $table->text('remarks')->nullable();
             $table->timestamps();
         });

@@ -6,9 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Inventory;
 use Exception;
+
 class InventoryController extends Controller
 {
-    public function store(Request $request)
+    public static function store(Request $request)
     {
         $new = $request->isMethod('put') ? Inventory::findOrFail($request->id) 
         : new Inventory;

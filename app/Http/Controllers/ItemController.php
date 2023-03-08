@@ -4,11 +4,43 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Item;
+use App\Http\Controllers\InventoryController;
 class ItemController extends Controller
 {
     public function index(){
         return Item::with('warranty')->with('supplier')->orderBy('item_name','ASC')->get();
     }
+
+    public  function add_stock(Request $request){
+        
+        $item = Item::where('id',$request->input('item_id'))->first();
+        $item->quantity+=$request->input('quantity');
+        try{
+            InventoryController::store($request);
+            $item->save();
+            $item->load('warranty', 'supplier');
+            return $item;
+        }
+        catch(Exception $e){
+            return $e->getMessage();
+        }
+    }
+    
+    public static function modify_stock($request){
+       
+        $item = Item::findOrFail($request->get('item_id'));
+        if($request->get('action') == 'add') $item->quantity+=$request->get('quantity');
+        else $item->quantity-=$request->get('quantity');
+    
+        try{
+            $item->save();
+            return $item;
+        }
+        catch(Exception $e){
+            return $e->getMessage();
+        }
+    }
+
     public function store(Request $request){
         $new = $request->isMethod('put') ? Item::findOrFail($request->id) : new Item;
         $new->supplier_id = $request->input('supplier_id');

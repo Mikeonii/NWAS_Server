@@ -11,6 +11,7 @@ use App\Models\Quoteable;
 use App\Models\Payment;
 use Carbon\Carbon;
 use DB;
+use App\Http\Controllers\ItemController;
 class InvoiceController extends Controller
 {
 
@@ -52,7 +53,6 @@ class InvoiceController extends Controller
         return $unpaid;
     }
     public function print($type,$invoice_id){
-    
         if($type =='invoice'){
             $invoice = Invoice::where('id',$invoice_id)->with('payables.payable')->with('payments')->with('customer')->first();
             $due_date = new Carbon($invoice->invoice_date);
@@ -118,7 +118,8 @@ class InvoiceController extends Controller
             );
         }
     }
-    // add payables to existing invoice. this function is used in adding an item in payablesModal.vue
+    # add payables to existing invoice.
+    # this function is used in adding an item in payablesModal.vue
     public function add_payables_to_invoice(Request $request){
         $insert_into = $request->input('insert_into');
         $id = $request->input('id');
@@ -224,6 +225,10 @@ class InvoiceController extends Controller
                         "quantity"=>$quantity,
                         "amount"=>$amount
                     ]);
+                    // modify item quantity - remove
+                    $req = collect(['item_id'=>$item->id,'quantity'=>$quantity,'action'=>'remove']);
+                    ItemController::modify_stock($req);
+
                 }
             }
         }
@@ -256,7 +261,6 @@ class InvoiceController extends Controller
             $inv->quoteables()->delete();
         }
         else{
-            // delete payables
             $inv->payables()->delete();
         }
         return $inv->delete();
