@@ -97,9 +97,9 @@ class ProblemController extends Controller
      * @param  \App\Models\Problem  $problem
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Problem $problem)
+    public function destroy($problem_id)
     {
-        return Problem::where('id',$problem)->destroy;
+        return Problem::where('id',$problem_id)->delete();
     }
     public function print2($problem_id){
         $problem = Problem::where('id',$problem_id)->with('customer')->first();
