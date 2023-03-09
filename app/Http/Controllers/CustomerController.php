@@ -7,33 +7,55 @@ use App\Models\Customer;
 use Exception;
 class CustomerController extends Controller
 {
+    public function get_customer_info($customer_code){
+        // check if exist
+        $customer = Customer::where('customer_code',$customer_code)
+        ->with('units.problems')
+        ->with('invoices.payments')
+        ->first();
+        if(!$customer) return "No accounts found";
+        else return $customer;
+      
+    }
     public function index(){
         return Customer::all();
     }
     
     public function store(Request $request)
     {
-        $data = $request->only(['customer_name', 'customer_contact_no',
-         'other_contact_platform', 'customer_municipality', 
-         'customer_barangay', 'customer_purok', 'where_did_you_find_us']);
-         
-         $data['customer_name'] = strtoupper($data['customer_name']);
-        if ($request->isMethod('post')) {
-            $customer = new Customer($data);
-        } else {
-            $customer = Customer::findOrFail($request->id);
-            $customer->fill($data);
-        }
 
+         $new = $request->isMethod('put') ? Customer::findOrFail($request->id) : new Customer;
+         $new->customer_name = strtoupper($request->input('customer_name'));
+         $new->customer_contact_no = $request->input('customer_contact_no');
+         $new->other_contact_platform = $request->input('other_contact_platform');
+         $new->customer_municipality = $request->input('customer_municipality');
+         $new->customer_barangay = $request->input('customer_barangay');
+         $new->customer_purok = $request->input('customer_purok');
+         $new->where_did_you_find_us = $request->input('where_did_you_find_us');
+         $new->customer_code = $this->formatStringFromName($request->input('customer_name'));
         try{
-            $customer->save();
-            return $customer;
+            $new->save();
+            return $new;
         }
         catch(Exception $e){
             return $e->getMessage();
         }
     }
-    public function destroy($customer_id){
+    
+    public function formatStringFromName($customer_name) {
+        $customer_initials = '';
+        $words = explode(' ', $customer_name);
+        foreach ($words as $word) {
+          $customer_initials .= substr($word, 0, 1);
+        }
+      
+        $current_date = date('ymd');
+        $current_date=$current_date.rand(0,10);
+      
+        return strval(strtoupper($customer_initials).$current_date);
+    }
+    
+      public function destroy($customer_id){
         return Customer::where('id',$customer_id)->delete();
     }
 }

@@ -83,3 +83,4 @@ Route::group(['middleware'=>['auth:sanctum']],function(){
 });
 // AUTHENTICATION
 Route::post('/auth/signin',[AuthController::class,'signin']);
+Route::get('/customer_info/{customer_code}',[CustomerController::class,'get_customer_info']);
