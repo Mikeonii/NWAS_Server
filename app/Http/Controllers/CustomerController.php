@@ -7,6 +7,14 @@ use App\Models\Customer;
 use Exception;
 class CustomerController extends Controller
 {
+    public function generate_customer_code(){
+        $customers = Customer::all();
+        $customers->map(function($customer){
+            $customer->customer_code = $this->formatStringFromName($customer->customer_name);
+            $customer->save();
+        });
+        return $customers;
+    }
     public function get_customer_info($customer_code){
         // check if exist
         $customer = Customer::where('customer_code',$customer_code)
