@@ -48,6 +48,7 @@ class InvoiceController extends Controller
         ->with('payables.payable.warranty')
         ->with('payments')
         ->with('quoteables.quoteable.warranty')
+        ->orderBy('customer','ASC')
         ->get();
 
         return $unpaid;
@@ -250,7 +251,8 @@ class InvoiceController extends Controller
         }
     }
     public function generate_invoice_code($invoice_date){
-        $x = "JMBC".$invoice_date.rand(10,100);
+        $date = date('ymd', strtotime($invoice_date));
+        $x = "JMBC".$date.rand(10,100);
         return $x;
     }
     public function delete_invoice($invoice_id){

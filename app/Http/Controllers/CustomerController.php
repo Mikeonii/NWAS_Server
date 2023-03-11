@@ -18,13 +18,17 @@ class CustomerController extends Controller
     public function get_customer_info($customer_code){
         // check if exist
         $customer = Customer::where('customer_code',$customer_code)
-        ->with('units.problems')
-        ->with('invoices.payments')
-        ->first();
-        if(!$customer) return "No accounts found";
-        else return $customer;
-      
+            ->with('units.problems')
+            ->with(['invoices' => function ($query) {
+                $query->where('is_quote', 0)
+                      ->with('payments')
+                      ->with('payables.payable');
+            }])
+            ->firstOrFail();
+    
+            return $customer;
     }
+    
     public function index(){
         return Customer::all();
     }
@@ -57,7 +61,7 @@ class CustomerController extends Controller
           $customer_initials .= substr($word, 0, 1);
         }
       
-        $current_date = date('ymd');
+        $current_date = date('d');
         $current_date=$current_date.rand(0,10);
       
         return strval(strtoupper($customer_initials).$current_date);
