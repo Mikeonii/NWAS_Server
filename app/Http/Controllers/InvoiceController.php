@@ -42,17 +42,20 @@ class InvoiceController extends Controller
         }
     }
     public function get_unpaid_invoices(){
-        $unpaid = Invoice::where('invoice_status','!=','Paid')
-        ->where('is_quote',0)
+        $unpaid = Invoice::where('invoice_status', '!=', 'Paid')
+        ->where('is_quote', 0)
         ->with('customer:id,customer_name')
         ->with('payables.payable.warranty')
         ->with('payments')
         ->with('quoteables.quoteable.warranty')
-        ->orderBy('customer','ASC')
+        ->join('customers', 'invoices.customer_id', '=', 'customers.id')
+        ->orderBy('customers.customer_name', 'ASC')
         ->get();
-
-        return $unpaid;
+    
+    return $unpaid;
+    
     }
+    
     public function print($type,$invoice_id){
         if($type =='invoice'){
             $invoice = Invoice::where('id',$invoice_id)->with('payables.payable')->with('payments')->with('customer')->first();
