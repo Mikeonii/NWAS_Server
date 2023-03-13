@@ -14,6 +14,7 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\SummaryController;
 use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\ReminderController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -76,12 +77,15 @@ Route::group(['middleware'=>['auth:sanctum']],function(){
 
         Route::get('/summary',[SummaryController::class,'get_summary']);
         Route::get('/yearly_summary',[SummaryController::class,'get_yearly_summary']);
-        Route::get('/get_picked_up_units',[SummaryController::class,'get_picked_up_units']);
+        Route::get('/get_picked_up_units',[UnitController::class,'get_picked_up_units']);
 
         Route::post('/add_stock',[ItemController::class,'add_stock']);
 
-
-});
+        Route::get('/get_reminders_by_type/{is_admin}/{date}',[ReminderController::class,'get_reminders_by_type']);
+        Route::post('/reminder',[ReminderController::class,'store']);
+        Route::put('/reminder',[ReminderController::class,'store']);
+        Route::delete('/reminder/{id}',[ReminderController::class,'delete']);
+}); 
       
 // AUTHENTICATION
 

@@ -116,8 +116,5 @@ class SummaryController extends Controller
                                   ->sum('balance');
         return $total_balance;
     }
-    // get all units that has been picked up
-    public function get_picked_up_units(){
-        return Unit::where('picked_up_date','!=',NULL)->with('customer')->with('problems')->get();
-    }
+
 }

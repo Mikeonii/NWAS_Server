@@ -28,4 +28,7 @@ class Customer extends Model
     public function invoices(){
         return $this->hasMany(Invoice::class);
     }
+    public function reminders(){
+        return $this->hasMany(Reminder::class);
+    }
 }

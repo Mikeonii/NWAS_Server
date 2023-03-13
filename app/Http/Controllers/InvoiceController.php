@@ -48,8 +48,7 @@ class InvoiceController extends Controller
         ->with('payables.payable.warranty')
         ->with('payments')
         ->with('quoteables.quoteable.warranty')
-        ->join('customers', 'invoices.customer_id', '=', 'customers.id')
-        ->orderBy('customers.customer_name', 'ASC')
+        ->orderBy('balance','DESC')
         ->get();
     
     return $unpaid;

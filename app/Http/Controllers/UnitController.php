@@ -6,6 +6,7 @@ use App\Models\Unit;
 use App\Models\Problem;
 use Illuminate\Http\Request;
 use Exception;
+use Carbon\Carbon;
 class UnitController extends Controller
 {
     /**
@@ -35,7 +36,22 @@ class UnitController extends Controller
         
         return view('print_job_order_slip')->with('data',$data)->with('unit',$unit);
      }
-    
+        // get all units that has been picked up
+        public function get_picked_up_units(){
+            $now = Carbon::now();
+            $last_week_start = $now->copy()->subWeek()->startOfWeek();
+            $last_week_end = $now->copy()->subWeek()->endOfWeek();
+            // $this_week_start = $now->startOfWeek();
+            return Unit::whereNotNull('picked_up_date')
+                       ->whereBetween('picked_up_date', [$last_week_start, $last_week_end])
+                       ->with('customer')
+                       ->with('problems')
+                       ->orderBy('picked_up_date','DESC')
+                       ->get();
+        }
+        
+        
+        
     public function index()
     {
         //
