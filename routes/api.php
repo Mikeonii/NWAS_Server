@@ -81,7 +81,8 @@ Route::group(['middleware'=>['auth:sanctum']],function(){
 
         Route::post('/add_stock',[ItemController::class,'add_stock']);
 
-        Route::get('/get_reminders_by_type/{is_admin}/{date}',[ReminderController::class,'get_reminders_by_type']);
+
+        Route::get('/reminders/{is_admin}',[ReminderController::class,'index']);
         Route::post('/reminder',[ReminderController::class,'store']);
         Route::put('/reminder',[ReminderController::class,'store']);
         Route::delete('/reminder/{id}',[ReminderController::class,'delete']);

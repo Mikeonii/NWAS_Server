@@ -10,19 +10,21 @@ use Exception;
 class ReminderController extends Controller
 {
     //
-    public function index(){
-        return Reminder::all();
+    public function index($is_admin){
+        if($is_admin) return Reminder::all();
+        else return Reminder::where('reminder_type','!=','Admin Reminder')->get();
     }
     public function delete($id){
-        return Reminder::delete($id);
+        return Reminder::findOrFail($id)->delete();
     }
     public function store(Request $request){
         $new = $request->isMethod('put') ? Reminder::findOrFail($request->id) : new Reminder;
         $new->reminder_type = $request->input('reminder_type');
         $new->reminder_description = $request->input('reminder_description');
-        $new->customer_id = $request->input('customer_id');
-        $new->schedule_date = $request->input('schedule_date');
-        $new->is_finished = 0;
+        $new->level_of_urgency = $request->input('level_of_urgency');
+        $new->reminder_date = $request->input('reminder_date');
+        $new->reminder_time = $request->input('reminder_time');
+        $new->is_finished = $request->isMethod('put') ? $request->input('is_finished') : 0;
         try{
             $new->save();
             return $new;
@@ -30,14 +32,6 @@ class ReminderController extends Controller
         catch(Exception $e){
             return $e->getMessage();
         }
-    }
-    public function get_reminders_by_type($is_admin, $date)
-    {   
-        $reminder_type = $is_admin ? 'Admin Reminder' : '!= Admin Reminder';
-        $reminders = Reminder::where('reminder_type', $reminder_type)
-        ->whereBetween('schedule_date', $this->get_date_range($date))
-        ->get();
-        return $reminders;
     }
     
     private function get_date_range($date)

@@ -17,8 +17,9 @@ class CreateRemindersTable extends Migration
             $table->id();
             $table->string('reminder_type'); //Admin Reminder, Home Service, Back Job, Review Job Order, Others
             $table->string('reminder_description');
-            $table->integer('customer_id');
-            $table->dateTime('schedule_date');
+            $table->date('reminder_date');
+            $table->time('reminder_time');
+            $table->string('level_of_urgency');
             $table->boolean('is_finished')->default(false);
             $table->timestamps();
         });
