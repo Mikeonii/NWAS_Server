@@ -13,10 +13,11 @@ class ExpenseController extends Controller
     public function destroy($expense_id){
         return Expense::where('id',$expense_id)->delete();
     }
-    public function store(Request $request){
+    public static function store(Request $request){
         $new = $request->isMethod('put') ? Expense::findOrFail($request->id) : new Expense;
         $new->expense_description = $request->input('expense_description');
         $new->expense_amount = $request->input('expense_amount');
+        $new->expense_type = $request->input('expense_type');
         $new->date_paid = $request->input('date_paid');
         try{
             $new->save();

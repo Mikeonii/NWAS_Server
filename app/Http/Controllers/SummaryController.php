@@ -21,7 +21,13 @@ class SummaryController extends Controller
         // total service sales
         $total_service_sales = $this->total_type_sales('services',$month,$year);    
         // total expense
+        
+        // this function returns the summary of expense_amount, 
+        // however we also need to consider the discounts given to the paid invoice which
+        // is considered expense.
         $total_expense = $this->total_expense($month,$year);
+        // total discount
+        $total_discount = $this->total_discount($month,$year);
         // total balance 
         $total_balance = $this->total_balance($month,$year);
         // total item net
@@ -34,6 +40,7 @@ class SummaryController extends Controller
             'Total Item Net'=>$total_item_net,
             'Total Service Sales'=>$total_service_sales,
             'Total Expense'=>$total_expense,
+            'Total Discount'=>$total_discount,
             'Total Collectibles'=>$total_balance
         ]);
         return $summary;
@@ -107,7 +114,17 @@ class SummaryController extends Controller
         $total_expense = Expense::whereMonth('date_paid', $month)
                                 ->whereYear('date_paid', $year)    
                                 ->sum('expense_amount');
+        $total_discount = $this->total_discount($month,$year);
+        $total_expense+=$total_discount;
         return $total_expense;
+    }
+    public function total_discount($month,$year){
+        // get total amount discount where balance == 0
+        $discount_given = Invoice::whereMonth('invoice_date', $month)
+        ->whereYear('invoice_date', $year)
+        ->where('balance','==',0)
+        ->sum('discount');
+        return $discount_given;
     }
     public function total_balance($month,$year){
         $total_balance = Invoice::whereMonth('updated_at',$month)

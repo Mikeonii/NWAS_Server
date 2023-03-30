@@ -17,7 +17,7 @@ use App\Http\Controllers\ProblemController;
 */
 
 
-Route::get('/print/{type}/{invoice_id}',[InvoiceController::class,'print']);
+Route::get('/print/{type}/{invoice_id}/{display_price}',[InvoiceController::class,'print']);
 Route::get('/print_job_order_slip/{data}/{unit_id}',[UnitController::class,'print_job_order_slip']);
 Route::get('/print_work_history_slip/{data}/{unit_id}',[UnitController::class,'print_work_history_slip']);
 Route::get('/work_history/{problem_id}/{invoice_id}',[ProblemController::class,'print']);

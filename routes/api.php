@@ -15,6 +15,7 @@ use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\SummaryController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ReminderController;
+use App\Http\Controllers\EmployeeController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -81,11 +82,13 @@ Route::group(['middleware'=>['auth:sanctum']],function(){
 
         Route::post('/add_stock',[ItemController::class,'add_stock']);
 
-
         Route::get('/reminders/{is_admin}',[ReminderController::class,'index']);
         Route::post('/reminder',[ReminderController::class,'store']);
         Route::put('/reminder',[ReminderController::class,'store']);
         Route::delete('/reminder/{id}',[ReminderController::class,'delete']);
+
+        Route::get('/employees',[EmployeeController::class,'index']);
+        Route::post('/employee',[EmployeeController::class,'store']);
 }); 
       
 // AUTHENTICATION
