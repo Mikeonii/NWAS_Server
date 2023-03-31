@@ -15,6 +15,10 @@ class CreateWagesTable extends Migration
     {
         Schema::create('wages', function (Blueprint $table) {
             $table->id();
+            $table->integer('employee_id');
+            $table->integer('amount');
+            $table->string('wage_type');    //15th, 30th, or CA
+            $table->date('date_paid');
             $table->timestamps();
         });
     }

@@ -40,6 +40,8 @@
                     <th>Price</th>
                     <th>Quantity</th>
                     <th style="color:red">Total</th>
+                @else
+                <th>Quantity</th>
                 @endif
             </tr>
         </thead>
@@ -55,6 +57,8 @@
                         <td>{{$payable->payable->service_amount}}</td>
                         <td>{{$payable->quantity}}</td>
                         <td style="color:green">{{$payable->amount}}</td>
+                    @else
+                        <td>{{$payable->quantity}}</td>
                     @endif
                         
                 @else 
@@ -64,6 +68,8 @@
                         <td>{{$payable->payable->selling_price}}</td>
                         <td>{{$payable->quantity}}</td>
                         <td style="color:green">{{$payable->amount}}</td>
+                    @else
+                        <td>{{$payable->quantity}}</td>
                     @endif
                 @endif
             </tr>
