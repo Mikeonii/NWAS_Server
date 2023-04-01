@@ -74,11 +74,11 @@ class SummaryController extends Controller
          *  and get the item's selling price and unit price.
          *So there should be a direct relationship with payables and items table whic is payable.
          * */ 
-        $items_payables = Payable::whereHas('invoice',function($query){
-            return $query->where('invoice_status','Paid');
+        $items_payables = Payable::whereHas('invoice',function($query) use($month,$year){
+            return $query->where('invoice_status','Paid')
+            ->whereMonth('updated_at',$month)
+            ->whereYear('updated_at',$year);
         })->where('payable_type','App\Models\Item')
-        ->whereMonth('updated_at',$month)
-        ->whereYear('updated_at',$year)
         ->with('payable')->get();
         $items_payables->map(function($item){
             // to get the item's capital, get the unit price*quantity
@@ -87,6 +87,7 @@ class SummaryController extends Controller
             $item_profit = $item->amount - $capital;
             $item->item_profit = $item_profit;
         });
+     
 
         return $items_payables->sum('item_profit');
     }
@@ -98,8 +99,8 @@ class SummaryController extends Controller
         $total_item_sales = Payable::where('payable_type',$selected_type)
         ->whereHas('invoice',function($query) use($date){
             return $query->where('invoice_status','Paid')
-            ->whereMonth('invoice_date',$date[0])
-            ->whereYear('invoice_date',$date[1]);
+            ->whereMonth('updated_at',$date[0])
+            ->whereYear('updated_at',$date[1]);
         })->sum('amount');
 
         return $total_item_sales;
