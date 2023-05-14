@@ -8,7 +8,10 @@ use App\Http\Controllers\InventoryController;
 class ItemController extends Controller
 {
     public function index(){
-        return Item::with('warranty')->with('supplier')->orderBy('item_name','ASC')->get();
+        return Item::with('warranty')
+        ->with('supplier')
+        ->with('import_batch')
+        ->orderBy('item_name','ASC')->get();
     }
 
     public  function add_stock(Request $request){
@@ -44,12 +47,16 @@ class ItemController extends Controller
     public function store(Request $request){
         $new = $request->isMethod('put') ? Item::findOrFail($request->id) : new Item;
         $new->supplier_id = $request->input('supplier_id');
-        $new->item_name = $request->input('item_name');
-        $new->item_type = $request->input('item_type');
+        $new->item_name = strtoupper($request->input('item_name'));
+        $new->item_type = strtoupper($request->input('item_type'));
         $new->unit_price = $request->input('unit_price');
         $new->selling_price = $request->input('selling_price');
         $new->profitable_margin = $request->input('profitable_margin');
-        $new->date_received = $request->input('date_received');
+        $new->import_batch_id = $request->import_batch_id;
+        if(!$request->isMethod('put')){
+            $new->quantity = 0;
+            $new->unit = "PCS";
+        }
         try{
             $new->save();
             if($request->isMethod('put')){
@@ -64,8 +71,8 @@ class ItemController extends Controller
                     "warranty_duration"=>$request->input('warranty_duration')
                 ]);
             }
-          
-            $new = Item::where('id',$new->id)->with('warranty')->with('supplier')->first();
+            $new->load(['warranty','supplier','import_batch']);
+            // $new = Item::where('id',$new->id)->with('warranty')->with('supplier')->first();
             return $new;
         }
         catch(Exception $e){

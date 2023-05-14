@@ -21,4 +21,7 @@ class Item extends Model
     public function supplier(){
         return $this->belongsTo(Supplier::class);
     }
+    public function import_batch(){
+        return $this->belongsTo(ImportBatch::class);
+    }
 }

@@ -16,9 +16,14 @@ class CreateWagesTable extends Migration
         Schema::create('wages', function (Blueprint $table) {
             $table->id();
             $table->integer('employee_id');
-            $table->integer('amount');
-            $table->string('wage_type');    //15th, 30th, or CA
-            $table->date('date_paid');
+            $table->string('half');
+            $table->string('month');
+            $table->string('year');
+            $table->float('total_days_worked');
+            $table->integer('deductions');
+            $table->string('notes');
+            $table->integer('total_gross');
+            $table->integer('total_net');
             $table->timestamps();
         });
     }

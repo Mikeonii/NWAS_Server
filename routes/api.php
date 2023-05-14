@@ -16,6 +16,8 @@ use App\Http\Controllers\SummaryController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ReminderController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\ImportBatchController;
+use App\Http\Controllers\WagesController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -49,6 +51,7 @@ Route::group(['middleware'=>['auth:sanctum']],function(){
         Route::delete('/problem/{problem_id}',[ProblemController::class,'destroy']);
 
         Route::post('/service',[ServiceController::class,'store']);
+        Route::put('/service',[ServiceController::class,'store']);
         Route::get('/services',[ServiceController::class,'index']);
         Route::post('/add_service_payment',[ServiceController::class,'add_service_payment']);
 
@@ -89,6 +92,14 @@ Route::group(['middleware'=>['auth:sanctum']],function(){
 
         Route::get('/employees',[EmployeeController::class,'index']);
         Route::post('/employee',[EmployeeController::class,'store']);
+
+        Route::post('/import_batch',[ImportBatchController::class,'store']);
+        Route::put('/import_batch',[ImportBatchController::class,'store']);
+        Route::get('/import_batches',[ImportBatchController::class,'index']);
+
+        Route::post('/wage',[WagesController::class,'store']);
+        Route::put('/wage',[WagesController::class,'store']);
+        Route::get('/wage/{id}',[WagesController::class,'show']);
 }); 
       
 // AUTHENTICATION

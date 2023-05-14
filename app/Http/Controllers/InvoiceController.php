@@ -94,7 +94,10 @@ class InvoiceController extends Controller
             $new->save();
             // get service payables
             $this->get_payables($request->input('payables'),$new->id,$request->input('is_quote'));
-            $new = Invoice::where('id',$new->id)->with('payables.payable.warranty')->with('quoteables.quoteable.warranty')->first();
+            $new = Invoice::where('id',$new->id)
+            ->with('payables.payable.warranty')
+            ->with('quoteables.quoteable.warranty')
+            ->first();
             return $new;
         }
         catch(Exception $e){
@@ -232,6 +235,7 @@ class InvoiceController extends Controller
                         "quantity"=>$quantity,
                         "amount"=>$amount
                     ]);
+  
                     // modify item quantity - remove
                     $req = collect(['item_id'=>$item->id,'quantity'=>$quantity,'action'=>'remove']);
                     ItemController::modify_stock($req);

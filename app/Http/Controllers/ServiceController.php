@@ -35,10 +35,14 @@ class ServiceController extends Controller
         $new->profitable_margin = $request->input('profitable_margin');
         try{
             $new->save();
-            $new->warranty()->create([
-                "warranty_count"=>$request->input('warranty_count'),
-                "warranty_duration"=>$request->input('warranty_duration')
-            ]);
+            $warrantyData = [
+                'warranty_count' => $request->input('warranty.warranty_count', $request->input('warranty_count')),
+                'warranty_duration' => $request->input('warranty.warranty_duration', $request->input('warranty_duration')),
+            ];
+            
+            if ($request->isMethod('put')) $new->warranty()->update($warrantyData);
+            else $new->warranty()->create($warrantyData);
+            
             $new = Service::where('id',$new->id)->with('warranty')->with('supplier')->first();
             return $new;
         }

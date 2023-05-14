@@ -12,9 +12,9 @@ class SupplierController extends Controller
     }
     public function store(Request $request){
         $new = $request->isMethod('put') ? Supplier::findOrFail($request->id) : new Supplier;
-        $new->supplier_name = $request->input('supplier_name');
+        $new->supplier_name = strtoupper($request->input('supplier_name'));
         $new->supplier_contact_no  =$request->input('supplier_contact_no');
-        $new->supplier_address =$request->input('supplier_address');
+        $new->supplier_address = strtoupper($request->input('supplier_address'));
         try{
             $new->save();
             return $new;
