@@ -11,6 +11,10 @@ use App\Models\Employee;
 use Carbon\Carbon;
 class WagesController extends Controller
 {
+    public function index(){
+        $wages = Wage::with('employee')->get();
+        return $wages;
+    }
     public function show($id){
         // show wages for an employee
         $employee_wages = Wage::where('employee_id',$id)->get();
@@ -30,7 +34,9 @@ class WagesController extends Controller
         try{
             $new->save();
             // insert into expenses
+            $new->load('employee');
             $this->add_to_expense($new);
+            $this->update_total_wage_received($new);
             return $new;
         }
         catch(Exception $e){
@@ -38,7 +44,7 @@ class WagesController extends Controller
         }
     }
     // TODO: This is a function that adds wages into expense
-    private function add_to_expense($new){
+    public function add_to_expense($new){
         $employee = Employee::findOrFail($new->employee_id);
         $expense_description = $employee->name."-".$new->wage_type;
         $expense_amount = $new->total_net;
@@ -60,5 +66,16 @@ class WagesController extends Controller
             return $e->getMessage();
         }
      
+    }
+
+    public function update_total_wage_received($new){
+        $employee = Employee::findOrFail($new->employee_id);
+        $employee->total_wage_received = $new->total_gross;
+        try{
+            $employee->save();
+        }
+        catch(Exception $e){
+            return $e->getMessage();
+        }
     }
 }

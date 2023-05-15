@@ -82,6 +82,7 @@ Route::group(['middleware'=>['auth:sanctum']],function(){
         Route::get('/summary',[SummaryController::class,'get_summary']);
         Route::get('/yearly_summary',[SummaryController::class,'get_yearly_summary']);
         Route::get('/get_picked_up_units',[UnitController::class,'get_picked_up_units']);
+        Route::get('/sales_summary',[SummaryController::class,'get_sales_summary']);
 
         Route::post('/add_stock',[ItemController::class,'add_stock']);
 
@@ -100,6 +101,7 @@ Route::group(['middleware'=>['auth:sanctum']],function(){
         Route::post('/wage',[WagesController::class,'store']);
         Route::put('/wage',[WagesController::class,'store']);
         Route::get('/wage/{id}',[WagesController::class,'show']);
+        Route::get('/wages',[WagesController::class,'index']);
 }); 
       
 // AUTHENTICATION
