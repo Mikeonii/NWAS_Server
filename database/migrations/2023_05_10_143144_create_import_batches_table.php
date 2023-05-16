@@ -22,6 +22,10 @@ class CreateImportBatchesTable extends Migration
             $table->integer('net_amount')->default(0);
             $table->date('date_ordered');
             $table->date('date_arrived')->nullable();
+            $table->date('break_even_date')->nullable();
+            $table->date('sold_out_date')->nullable();
+            $table->integer('no_of_associated_units')->nullable();
+            $table->integer('days_before_sold_out')->nullable();
             $table->timestamps();
         });
     }

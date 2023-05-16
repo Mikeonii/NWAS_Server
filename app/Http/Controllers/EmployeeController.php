@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Employee;
+use App\Models\Wage;
 use Exception;
 
 class EmployeeController extends Controller
@@ -32,5 +33,18 @@ class EmployeeController extends Controller
         catch(Exception $e){
             return $e->getMessage();
         }
+    }
+
+    public function print($employee_id,$half,$month,$year){
+        $employee = Employee::findOrFail($employee_id);
+        $wage = Wage::where('half',$half)
+        ->where('month',$month)
+        ->where('year',$year)
+        ->first();
+
+        return view('print_pay_slip')
+        ->with('employee',$employee)
+        ->with('wage',$wage);
+
     }
 }

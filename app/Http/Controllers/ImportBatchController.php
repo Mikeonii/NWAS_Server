@@ -39,6 +39,7 @@ class ImportBatchController extends Controller
         $importBatch->gross_amount += $amount;
         try {
             self::calculateNetAmount($importBatch);
+            self::check_for_break_even_date($importBatch);
             $importBatch->save();
             return $importBatch;
         } catch (Exception $e) {
@@ -57,4 +58,35 @@ class ImportBatchController extends Controller
             return $e->getMessage;
         }
     }
+    public static function check_for_break_even_date(ImportBatch $importBatch){
+        // if capital == gross then set today as break even date
+        if($importBatch->gross_amount == $importBatch->capital_amount){
+            $today = Carbon::now();
+            $importBatch->break_even_date = $today->format('Y-m-d');
+            try{
+                $imortBatch->save();
+            }
+            catch(Exception $e){
+                return $e->getMessage();
+            }
+        }
+    }
+    public static function modify_associated_units($operation,$quantity,$import_batch_id) {
+        $import_batch = ImportBatch::findOrFail($import_batch_id);
+        $no_of_units_associated = $import_batch->no_of_units_associated;
+    
+        if ($operation === 'add') {
+            $import_batch->no_of_associated_units+=$quantity;
+        } elseif ($operation === 'subtract') {
+            $import_batch->no_of_associated_units-=$quantity;
+        } else {
+            return 'Invalid operation';
+        }
+        try {
+            $import_batch->save();
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+    
 }

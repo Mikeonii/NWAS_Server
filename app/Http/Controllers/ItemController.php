@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Item;
 use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\ImportBatchController;
 class ItemController extends Controller
 {
     public function index(){
@@ -18,6 +19,8 @@ class ItemController extends Controller
         
         $item = Item::where('id',$request->input('item_id'))->first();
         $item->quantity+=$request->input('quantity');
+        // add associated units to batch imports
+        ImportBatchController::modify_associated_units('add',$request->quantity,$item->import_batch_id);
         try{
             InventoryController::store($request);
             $item->save();
@@ -53,7 +56,7 @@ class ItemController extends Controller
         $new->selling_price = $request->input('selling_price');
         $new->profitable_margin = $request->input('profitable_margin');
         $new->import_batch_id = $request->import_batch_id;
-        if(!$request->isMethod('put')){
+        if($request->isMethod('post')){
             $new->quantity = 0;
             $new->unit = "PCS";
         }
