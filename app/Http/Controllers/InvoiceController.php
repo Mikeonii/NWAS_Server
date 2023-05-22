@@ -74,7 +74,12 @@ class InvoiceController extends Controller
         return "print";
     }
     public function show($customer_id){
-        return Invoice::where('customer_id',$customer_id)->with('payables.payable.warranty')->with('payments')->with('quoteables.quoteable.warranty')->get();
+        return Invoice::where('customer_id',$customer_id)
+        ->with('payables.payable.warranty')
+        ->with('payables.payable.import_batch')
+        ->with('payments')
+        ->with('quoteables.quoteable.warranty')
+        ->get();
     }
     public function store(Request $request){
         $new = $request->isMethod('put') ? Invoice::findOrFail($request->id) : new Invoice;

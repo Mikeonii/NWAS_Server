@@ -20,11 +20,11 @@ class ItemController extends Controller
         $item = Item::where('id',$request->input('item_id'))->first();
         $item->quantity+=$request->input('quantity');
         // add associated units to batch imports
-        ImportBatchController::modify_associated_units('add',$request->quantity,$item->id);
+        ImportBatchController::modify_associated_units('add',$request->quantity,$item->import_batch_id);
         try{
             InventoryController::store($request);
             $item->save();
-            $item->load('warranty', 'supplier');
+            $item->load('warranty', 'supplier','import_batch');
             return $item;
         }
         catch(Exception $e){
