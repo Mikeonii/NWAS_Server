@@ -12,7 +12,7 @@ class PaymentController extends Controller
 {   
     public function destroy($payment_id,$invoice_id){
         $payment = Payment::findOrFail($payment_id);
-        $this->update_balance($invoice_id,$payment->amount_paid,'add');
+        $this->update_balance($invoice_id,$payment->amount_paid,'add','With Balance');
         $payment->delete();
    
     }

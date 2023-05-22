@@ -78,6 +78,7 @@ class InvoiceController extends Controller
         ->with('payables.payable.warranty')
         ->with('payables.payable.import_batch')
         ->with('payments')
+        ->with('payables.item')
         ->with('quoteables.quoteable.warranty')
         ->get();
     }
@@ -109,6 +110,8 @@ class InvoiceController extends Controller
             return $e->getMessage();
         }
     }
+
+
     public function get_payables($payables,$invoice_id,$is_quote){
         foreach($payables as $payable){
             $quantity = $payable["quantity"];

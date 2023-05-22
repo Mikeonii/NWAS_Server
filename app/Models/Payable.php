@@ -19,4 +19,8 @@ class Payable extends Model
     public function invoice(){
         return $this->belongsTo(Invoice::class);
     }
+    public function item()
+    {
+        return $this->belongsTo(Item::class, 'payable_id');
+    }
 }
