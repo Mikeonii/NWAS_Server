@@ -24,4 +24,5 @@ class Item extends Model
     public function import_batch(){
         return $this->belongsTo(ImportBatch::class);
     }
+    
 }
