@@ -44,6 +44,7 @@ class InvoiceController extends Controller
     public function get_unpaid_invoices(){
         $unpaid = Invoice::where('invoice_status', '!=', 'Paid')
         ->where('is_quote', 0)
+        ->with('customer')
         ->with('payables.payable.warranty')
         ->with('payables.payable.import_batch')
         ->with('payments')
