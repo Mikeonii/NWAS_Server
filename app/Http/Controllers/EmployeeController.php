@@ -38,12 +38,12 @@ class EmployeeController extends Controller
     public function print($employee_id,$half,$month,$year){
         $employee = Employee::findOrFail($employee_id);
 
-        $wage = Wage::where('half',$half)
+        $wage = Wage::where('employee_id',$employee_id)
+        ->where('half',$half)
         ->where('month',$month)
         ->where('year',$year)
-        ->where('employee_id',$employee_id)
         ->first();
-
+        
         return view('print_pay_slip')
         ->with('employee',$employee)
         ->with('wage',$wage);
