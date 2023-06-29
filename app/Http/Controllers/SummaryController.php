@@ -36,7 +36,7 @@ class SummaryController extends Controller
         $total_overall_net = $total_item_net + $total_service_sales;
 
         $summary = collect([
-            'Total Sales'=>$total_sales,
+            'Cash Received'=>$total_sales,
             'Total Item Net'=>$total_item_net,
             'Total Service Sales'=>$total_service_sales,
             'Total Expense'=>$total_expense,
@@ -98,10 +98,10 @@ class SummaryController extends Controller
         $date = collect([$month,$year]);
         $total_item_sales = Payable::where('payable_type',$selected_type)
         ->whereHas('invoice',function($query) use($date){
-            return $query->where('invoice_status','Paid')
-            ->whereMonth('updated_at',$date[0])
-            ->whereYear('updated_at',$date[1]);
-        })->sum('amount');
+            $query->where('invoice_status','Paid');
+            
+        })->whereMonth('updated_at',$date[0])
+        ->whereYear('updated_at',$date[1])->sum('amount');
 
         return $total_item_sales;
     }
@@ -121,8 +121,9 @@ class SummaryController extends Controller
     }
     public function total_discount($month,$year){
         // get total amount discount where balance == 0
-        $discount_given = Invoice::whereMonth('invoice_date', $month)
-        ->whereYear('invoice_date', $year)
+        $discount_given = Invoice::whereMonth('created_at', $month)
+        ->whereYear('created_at', $year)
+        ->where('invoice_status','Paid')
         ->where('balance','==',0)
         ->sum('discount');
         return $discount_given;

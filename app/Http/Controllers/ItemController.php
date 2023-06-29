@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Item;
+use App\Models\ImportBatch;
+use App\Models\Payable;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ImportBatchController;
 class ItemController extends Controller
@@ -82,4 +84,96 @@ class ItemController extends Controller
             return $e->getMessage();
         }
     }
+    public function print_batch_import($batch_import_id){
+        $import_batch = ImportBatch::findOrFail($batch_import_id);
+        $items = Item::where('import_batch_id',$batch_import_id)
+        ->with('supplier')
+        ->with('import_batch')
+        ->get();
+        return view('print_batch_import')
+        ->with('items',$items)
+        ->with('import_batch',$import_batch);
+    }
+    public function print_item_sales($fromDate, $toDate, $batch_import_id, $radioSelection)
+    {
+        
+        if($radioSelection == 'items'){
+            $itemSales = Payable::where('payable_type', 'App\Models\Item')
+            ->whereHas('invoice', function ($query) {
+                $query->where('invoice_status', 'Paid');
+            })
+            ->whereBetween('created_at', [$fromDate, $toDate])
+            ->orderBy('id', 'DESC')
+            ->with('invoice.customer', 'item.import_batch')
+            ->when($batch_import_id != 'none', function ($query) use ($batch_import_id) {
+                $query->whereHas('item', function ($query) use ($batch_import_id) {
+                    $query->where('import_batch_id', $batch_import_id);
+                });
+            })
+            
+            ->get();
+
+            return view('print_sales_summary')
+            ->with('fromDate',$fromDate)
+            ->with('toDate',$toDate)
+            ->with('itemSales',$itemSales);
+
+
+        }
+        else if($radioSelection =='services'){
+        
+            $serviceSales = Payable::where('payable_type', 'App\Models\Service')
+            ->whereHas('invoice', function ($query) {
+                $query->where('invoice_status', 'Paid');
+            })
+            ->whereBetween('created_at', [$fromDate, $toDate])
+            ->orderBy('id', 'DESC')
+            ->with('invoice.customer', 'service.supplier')
+            ->get();
+
+            // return $serviceSales;
+            return view('print_services_summary')
+            ->with('serviceSales',$serviceSales)
+            ->with('fromDate',$fromDate)
+            ->with('toDate',$toDate);
+        }
+        else{
+            $allSales = Payable::whereHas('invoice', function ($query) {
+                $query->where('invoice_status', 'Paid');
+            })
+            ->whereBetween('created_at', [$fromDate, $toDate])
+            ->orderBy('id', 'DESC')
+            ->with('invoice.customer')
+            ->when(function ($query) {
+                $query->where('payable_type', 'App\Models\Service');
+            }, function ($query) {
+                $query->with(['service'])->without('item');
+            })
+            ->when(function ($query) {
+                $query->where('payable_type', 'App\Models\Item');
+            }, function ($query) {
+                $query->with(['item.import_batch'])->without('service');
+            })
+            ->get();
+        
+            $allSales->map(function($item){
+                if($item->payable_type == 'App\Models\Service'){
+                    $item->unset('item');
+                }
+                else{
+                    $item->unset('service');
+                }
+            });
+        return $allSales;
+        
+        
+        
+        
+            return view('print_all_summary')->with('allSales',$allSales);
+        }
+       
+        
+     
+    }
+    
 }

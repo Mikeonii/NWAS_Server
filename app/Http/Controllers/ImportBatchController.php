@@ -9,7 +9,7 @@ use App\Models\ImportBatch;
 class ImportBatchController extends Controller
 {
     public function index(){
-        return ImportBatch::with('supplier')->get();
+        return ImportBatch::with('supplier')->orderBy('batch_description', 'ASC')->get();
     }
     public function store(Request $request){
         $new = $request->isMethod('put') ? ImportBatch::findOrFail($request->id) : new ImportBatch;

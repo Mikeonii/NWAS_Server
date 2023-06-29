@@ -23,4 +23,8 @@ class Payable extends Model
     {
         return $this->belongsTo(Item::class, 'payable_id');
     }
+    public function service()
+    {
+        return $this->belongsTo(Service::class, 'payable_id');
+    }
 }
