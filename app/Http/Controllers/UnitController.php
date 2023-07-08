@@ -84,6 +84,8 @@ class UnitController extends Controller
         $unit->picked_up_by = $request->input('picked_up_by');
         $unit->picked_up_date = $request->input('picked_up_date');
         $unit->issued_warranty = json_encode($request->input('issued_warranty'));
+        $unit->accessories = json_encode($request->accessories);
+        $unit->includes = json_encode($request->includes);
        try{
            $unit->save();
            return $unit;

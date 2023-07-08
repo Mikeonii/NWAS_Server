@@ -144,30 +144,12 @@ class ItemController extends Controller
             ->whereBetween('created_at', [$fromDate, $toDate])
             ->orderBy('id', 'DESC')
             ->with('invoice.customer')
-            ->when(function ($query) {
-                $query->where('payable_type', 'App\Models\Service');
-            }, function ($query) {
-                $query->with(['service'])->without('item');
-            })
-            ->when(function ($query) {
-                $query->where('payable_type', 'App\Models\Item');
-            }, function ($query) {
-                $query->with(['item.import_batch'])->without('service');
-            })
+            ->with('item.supplier')
+            ->with('service')
             ->get();
         
-            $allSales->map(function($item){
-                if($item->payable_type == 'App\Models\Service'){
-                    $item->unset('item');
-                }
-                else{
-                    $item->unset('service');
-                }
-            });
-        return $allSales;
-        
-        
-        
+       
+        // return $allSales;
         
             return view('print_all_summary')->with('allSales',$allSales);
         }
