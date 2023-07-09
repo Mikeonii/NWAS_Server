@@ -115,8 +115,7 @@ class SummaryController extends Controller
         $total_expense = Expense::whereMonth('date_paid', $month)
                                 ->whereYear('date_paid', $year)    
                                 ->sum('expense_amount');
-        $total_discount = $this->total_discount($month,$year);
-        $total_expense+=$total_discount;
+      
         return $total_expense;
     }
     public function total_discount($month,$year){
@@ -129,9 +128,10 @@ class SummaryController extends Controller
         return $discount_given;
     }
     public function total_balance($month,$year){
-        $total_balance = Invoice::whereMonth('updated_at',$month)
-                                  ->whereYear('updated_at',$year)
+        $total_balance = Invoice::whereMonth('created_at',$month)
+                                  ->whereYear('created_at',$year)
                                   ->where('is_quote',0)
+                                  ->where('invoice_status','!=','Paid')
                                   ->sum('balance');
         return $total_balance;
     }
@@ -166,7 +166,7 @@ class SummaryController extends Controller
     
         // build the summary data collection
         $summary_data->push([
-            'id'=>1,
+            'id'=>1,    
             'label' => 'Today',
             'date' => $today->toFormattedDateString(),
             'data' => [
@@ -289,6 +289,82 @@ class SummaryController extends Controller
         $total_expense = $this->get_total_expense($type);
         $cash_on_hand = $total_sales['item_sales'] + $total_sales['service_sales'] - $total_expense;
         return $cash_on_hand;
+    }
+
+    public function get_list_summary_for_this_month($data){
+        if($data == "Cash Received"){
+            // get all payments with invoice.customer
+            $payments = Payment::whereMonth('created_at', now()->month)
+            ->whereYear('created_at',now())
+            ->with('invoice.customer','invoice.payments','invoice.payables.payable.warranty','invoice.payables.payable.import_batch',
+            'invoice.payables.item','invoice.quoteables.quoteable.warranty')
+            ->get();
+
+            return $payments;
+        }
+        if($data == "Total Item Net"){
+            // get all paid payables where the invoice update date is this month and where payable type == 'app\models\item'
+            $itemSales = Payable::where('payable_type', 'App\Models\Item')
+            ->whereHas('invoice', function ($query) {
+                $query->where('invoice_status', 'Paid')
+                ->whereMonth('updated_at',now())
+                ->whereYear('updated_at',now());
+            })
+            ->orderBy('id', 'DESC')
+            ->with('invoice.customer', 'item.import_batch')
+            ->get();
+
+            return $itemSales;
+        }
+
+        if($data == "Total Service Sales"){
+            // get all paid payables where the invoice update date is this month and where payable type == 'app\models\Service'
+            $itemSales = Payable::where('payable_type', 'App\Models\Service')
+            ->whereHas('invoice', function ($query) {
+                $query->where('invoice_status', 'Paid')
+                ->whereMonth('created_at',now())
+                ->whereYear('created_at',now());
+            })
+            ->orderBy('id', 'DESC')
+            ->with('invoice.customer', 'service')
+            ->get();
+
+            return $itemSales;
+
+        }
+        if($data =="Total Expense"){
+            // return all expense this month
+            $expenses = Expense::whereMonth('created_at',now())
+            ->whereYear('created_at',now())
+            ->orderBy('expense_amount', 'DESC')
+            ->get();
+            return $expenses;
+        }
+
+        if($data == "Total Collectibles"){
+            // get all unpaid invoices this month
+            $collectibles = Invoice::whereMonth('created_at',now())
+            ->whereYear('created_at',now())
+            ->where('invoice_status','!=','Paid')
+            ->with('customer')
+            ->orderBy('balance', 'DESC')
+            ->get();
+            return $collectibles;
+
+            
+        }
+
+        if($data == "Total Discount"){
+            // get all discount given
+            $discounts = Invoice::whereMonth('created_at',now())
+            ->whereYear('created_at',now())
+            ->where('invoice_status','Paid')
+            ->where('balance','==',0)
+            ->where('discount','>',0)
+            ->with('customer')
+            ->get();
+            return $discounts;
+        }
     }
     
     

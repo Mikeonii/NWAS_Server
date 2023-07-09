@@ -102,6 +102,8 @@ Route::group(['middleware'=>['auth:sanctum']],function(){
         Route::put('/wage',[WagesController::class,'store']);
         Route::get('/wage/{id}',[WagesController::class,'show']);
         Route::get('/wages',[WagesController::class,'index']);
+
+        Route::get('/get_list_summary_for_this_month/{data}',[SummaryController::class,'get_list_summary_for_this_month']);
 }); 
       
 // AUTHENTICATION

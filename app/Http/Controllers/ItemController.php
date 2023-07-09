@@ -98,6 +98,9 @@ class ItemController extends Controller
     {
         
         if($radioSelection == 'items'){
+            // note: if an payable sa invoice was created before the range of the date, and then nagbajad within the range nan date filter,
+            // dili jadto maapil diri tungod ky an payable, na create before pa. eni sija within sa range of the date ra. 
+            // kibali an makita ra gjud diri an jaon kuman tag himo na invoice, then kuman rasab nag bjad. basta ky within the from and to date. 
             $itemSales = Payable::where('payable_type', 'App\Models\Item')
             ->whereHas('invoice', function ($query) {
                 $query->where('invoice_status', 'Paid');

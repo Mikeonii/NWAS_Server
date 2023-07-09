@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Payable extends Model
 {
@@ -26,5 +27,29 @@ class Payable extends Model
     public function service()
     {
         return $this->belongsTo(Service::class, 'payable_id');
+    }
+
+        // ...
+
+    /**
+     * Get the formatted created_at attribute.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getCreatedAtAttribute($value)
+    {
+        return Carbon::parse($value)->format('F j, Y');
+    }
+
+    /**
+     * Get the formatted updated_at attribute.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getUpdatedAtAttribute($value)
+    {
+        return Carbon::parse($value)->format('F j, Y');
     }
 }
