@@ -20,12 +20,12 @@
 
             <div class="row" style="margin-top:20px;">
                 <div class="col">
-                    <h6 style="font-weight:bold">PREPARED FOR</h6>
+                    <h6 style="font-weight:bold">PREPA#000d85 FOR</h6>
                     <div
                     style="
                       height: 3px;
                       width: 100%;
-                      background-image: linear-gradient(to right, red, blue);
+                      background-image: linear-gradient(to right, #000d85, #000d85);
                     "
                   > </div>
                     <p>{{$unit->customer->customer_name}}</p>
@@ -39,7 +39,7 @@
                     style="
                       height: 3px;
                       width: 100%;
-                      background-image: linear-gradient(to right, red, blue);
+                      background-image: linear-gradient(to right, #000d85, #000d85);
                     "
                   > </div>
                     <p style="margin-top;">Type: {{$unit->unit_type}}</p>
@@ -53,10 +53,10 @@
                 <h6 style="font-weight:bold">INITIAL PROBLEM/S: @foreach($data as $d)<span>{{$d}}, </span>@endforeach </h6>
                 <p>Terms and Conditions</p>
                 <ol style="color:black; font-size:12px">
-                    <li>Liability: Our business is not liable for any damages, external or internal, that may occur to your device after it has been removed from our shop, especially if the damage is not related to the service we rendered.</li>
-                    <li>Warranty: After the warranty period has expired, we are not obliged to repair or replace items for free. Additional charges may apply.</li> 
+                    <li>Liability: Our business is not liable for any damages, external or internal, that may occur to your device after it has been removed from our shop, especially if the damage is not related to the service we rende#000d85.</li>
+                    <li>Warranty: After the warranty period has expi#000d85, we are not obliged to repair or replace items for free. Additional charges may apply.</li> 
                     <li>Device Pick-up & Storage: You'll be notified of pick-up via text, email or chat after repair. If not picked up within 15 days, daily storage fee of 15 pesos applies. After 3 months, device becomes our property.</li>
-                    <li>Payment: Diagnostic fee of 180 pesos for Laptop/Desktop External, 250 Internal, Printer diagnosis 300 pesos, Board diagnosis fee of 380 pesos, and other charges are due upon pick-up. We accept cash and online payments. Downpayments, if required, must be paid before the order is processed.</li>
+                    <li>Payment: Diagnostic fee of 180 pesos for Laptop/Desktop External, 250 Internal, Printer diagnosis 300 pesos, Board diagnosis fee of 380 pesos, and other charges are due upon pick-up. We accept cash and online payments. Downpayments, if requi#000d85, must be paid before the order is processed.</li>
                     <li>Data Backup: Backup all important data before repair. We are not responsible for data loss.</li>
                     <li>Changes: These terms and conditions are subject to change at any time without notice.</li>
                     <li>Acceptance: By leaving your device for repair, you are accepting these terms and conditions.</li>

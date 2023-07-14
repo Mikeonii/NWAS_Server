@@ -43,6 +43,7 @@ class CustomerController extends Controller
          $new->customer_municipality = $request->input('customer_municipality');
          $new->customer_barangay = $request->input('customer_barangay');
          $new->customer_purok = $request->input('customer_purok');
+         $new->customer_province = $request->customer_province;
          $new->where_did_you_find_us = $request->input('where_did_you_find_us');
          $new->customer_code = $this->formatStringFromName($request->input('customer_name'));
         try{

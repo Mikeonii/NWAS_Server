@@ -17,8 +17,8 @@
                     <div class="col" style="text-align:right"><h6 style="color:grey; ">Date: {{$ate}}</h6></div> --}}
                 </div>
             </div>
-            <div class="col-4"><img src="{{ asset('jmb_logo.png') }}" 
-                width="140%" style="margin-top:-10px;">
+            <div class="col-4"><img src="{{ asset('nwaslogo_colored.png') }}" 
+                width="100%" style="margin-top:-10px;">
             </div>
         </div>
         
@@ -30,7 +30,7 @@
     style="
       height: 3px;
       width: 100%;
-      background-image: linear-gradient(to right, red, blue);
+      background-image: linear-gradient(to right, #000d85, #000d85);
     "
     >
     </div>
@@ -88,7 +88,7 @@
         @if($prob->status =='Fixed')
         <div class="col sm-4" style="color:Green">Status: <strong>{{$prob->status}}</strong></div>
         @else
-        <div class="col sm-4" style="color:red">Status: <strong>{{$prob->status}}</strong></div>
+        <div class="col sm-4" style="color:#000d85">Status: <strong>{{$prob->status}}</strong></div>
         @endif
     </div>
     <hr>
@@ -100,7 +100,7 @@
                 <th>Description</th>
                 <th>Price</th>
                 <th>Quantity</th>
-                <th style="color:red">Total</th>
+                <th style="color:#000d85">Total</th>
                 <th>Warranty</th>
             </tr>
         </thead>

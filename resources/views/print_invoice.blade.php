@@ -22,13 +22,9 @@
 </div>
   
 
-  <div
-  style="
-    height: 10px;
-    width: 100%;
-    background-image: linear-gradient(to right, red, blue);
-  "
-></div>
+<div style="height: 10px; width: 100%; background-image: 
+linear-gradient(to right, #000d85, #000d85);"></div>
+
 
 <div class = "container" style="width:550px; margin-auto;">
     <table class="table table-striped table-dense" style="font-size:15px;">
@@ -91,7 +87,7 @@
             style="
               height: 3px;
               width: 100%;
-              background-image: linear-gradient(to right, red, blue);
+              background-image: linear-gradient(to right, #000d85, #000d85);
             "
           > </div>
 
@@ -106,7 +102,7 @@
             style="
               height: 3px;
               width: 100%;
-              background-image: linear-gradient(to right, red, blue);
+              background-image: linear-gradient(to right, #000d85, #000d85);
             "
           > </div>
           <p style="">Pay via Cash or Gcash: 09306550892 - Jan Michael B.</p>
@@ -132,7 +128,7 @@ class="container"
 style="
   height: 20%;
   width: 100%;
-  background-image: linear-gradient(to right, red, blue);
+  background-image: linear-gradient(to right, #000d85, #000d85);
 "
 >
 @else
@@ -141,15 +137,15 @@ class="container"
 style="
   height: 20%;
   width: 100%;
-  background-image: linear-gradient(to right, red, blue);
+  background-image: linear-gradient(to right, #000d85, #000d85);
   margin-top:70px;
 "
 >
 @endif
 <div class="row" style="padding-right:60px; padding-left:60px; padding-top:20px; padding-bottom:10px;">
     
-    <div class="col"><img src="{{ asset('jmb_computers_white.png') }}" 
-        width="100%" style="margin-top:30px;">
+    <div class="col"><img src="{{ asset('nwaslogo.png') }}" 
+        width="80%" style="margin-top:0px;">
  
     </div>
     <div class="col" style="color:white;width:700px;">
